@@ -45,6 +45,87 @@
         .modal-btn-row { display: flex; gap: 10px; margin-top: 10px; }
         .modal-btn-main { flex: 2; background: var(--olive); color: var(--bg); border: none; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; }
         .modal-btn-del { flex: 1; border: 1.5px solid var(--terracotta); color: var(--terracotta); background: none; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; }
+
+    .split-recommend-container {
+    display: flex;
+    height: 160px; /* 固定高度讓左右對齊 */
+    margin-bottom: 24px;
+    gap: 12px;
+}
+
+.current-side {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.next-side {
+    flex: 1.4; /* 右邊稍微寬一點，增加推薦感 */
+    background: var(--terracotta); /* 填滿背景 */
+    color: white;
+    border-radius: 24px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(179, 106, 91, 0.2);
+}
+
+.sheet-name-small {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-main);
+    display: block;
+}
+
+.sheet-name-large {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.days-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--olive);
+    background: rgba(159, 163, 138, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+.action-hint {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    opacity: 0.6;
+}
+
+.footprint-icon {
+    position: absolute;
+    bottom: -5px;
+    right: 5px;
+    font-size: 24px;
+    opacity: 0.2;
+    transform: rotate(-15deg);
+}
+
+.section-title {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 0; /* 覆蓋全域設定 */
+}
+    
     </style>
 </head>
 <body>
@@ -111,6 +192,24 @@
             <textarea id="importInput" rows="3" placeholder="貼上代碼..." style="width:100%; border:1px solid var(--border); border-radius:10px; padding:10px; font-size:12px; outline:none; color:white;"></textarea>
             <button class="btn-add" style="width:100%; margin-top:12px; border-color:var(--terracotta); color:var(--terracotta);" onclick="importData()">RESTORE</button>
         </div>
+    </div>
+</div>
+
+    <div class="split-recommend-container">
+    <div class="current-side">
+        <div class="section-title">CURRENT</div>
+        <div class="current-info">
+            <span class="sheet-name-small">${data.currentSheet}</span>
+            <div class="days-pill">${sheetDays} DAYS</div>
+        </div>
+    </div>
+
+    <div class="next-side" onclick="rotateSheet()">
+        <div class="section-title" style="color: rgba(255,255,255,0.7)">NEXT RECOMMEND</div>
+        <div id="nextSheetName" class="sheet-name-large">${recSheet.name}</div>
+        <div class="action-hint">TAP TO ROTATE</div>
+        
+        <div class="footprint-icon">👣</div>
     </div>
 </div>
 
