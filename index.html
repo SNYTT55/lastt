@@ -148,13 +148,19 @@
 
     function render() {
         // TASKS 渲染
-        const taskList = data.basic.map((t, idx) => {
+const taskList = data.basic.map((t, idx) => {
             const start = new Date(t.lastDate).getTime();
             const freqMs = (t.freq || 1) * 86400000;
             const elapsed = now.getTime() - start;
             const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
             const isDue = elapsed >= freqMs;
-            return { ...t, idx, end: start + freqMs, progress, isDue, daysAgo: (elapsed/86400000).toFixed(1) };
+            
+            // --- 補上這段日期計算，修復 undefined 問題 ---
+            const dueDate = new Date(start + freqMs);
+            const dateStr = `${dueDate.getMonth() + 1}/${dueDate.getDate()}`;
+            // ------------------------------------------
+
+            return { ...t, idx, end: start + freqMs, progress, isDue, dateStr, daysAgo: (elapsed/86400000).toFixed(1) };
         }).sort((a, b) => a.end - b.end);
 
         document.getElementById('taskList').innerHTML = taskList.map(t => `
