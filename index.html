@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-TW"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;SHIFT_DOMESTIC_V5.2&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-bg: #1a1a1c;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-card-bg: #242427;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-border: rgba(255, 255, 255, 0.08);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-text-main: #e4e4e7;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-text-sub: #82828c;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-olive: #c8fcbd; <span class="Apple-converted-space">     </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>--mj-terracotta: #edc108;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>* { box-sizing: border-box; -webkit-font-smoothing: antialiased; letter-spacing: 0.02em; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body { font-family: "Helvetica Neue", sans-serif; background: var(--mj-bg); color: var(--mj-text-main); margin: 0; display: flex; justify-content: center; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.container { width: 100%; max-width: 480px; padding: 20px; padding-bottom: 50px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 分頁導航 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mode-switcher { background: rgba(0,0,0,0.4); border-radius: 12px; display: flex; padding: 4px; margin-bottom: 20px; border: 1px solid var(--mj-border); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mode-btn { flex: 1; border: none; padding: 8px; border-radius: 8px; font-size: 11px; cursor: pointer; color: var(--mj-text-sub); background: transparent; font-weight: 900; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.mode-btn.active { background: #f5f5f7; color: #000; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-content { display: none; animation: mjFade 0.2s ease; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.tab-content.active { display: block; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 家事列表 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.task-item {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: var(--mj-card-bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--mj-border);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.task-name { font-weight: 700; font-size: 14px; margin-bottom: 2px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.task-meta { font-size: 11px; color: var(--mj-text-sub); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 床單看板 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sheet-card { background: var(--mj-card-bg); border-radius: 16px; border: 1px solid var(--mj-border); padding: 25px; text-align: center; margin-bottom: 15px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.sheet-current { font-size: 24px; font-weight: 900; margin: 15px 0; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.1); }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.toggle-box { background: #000; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border: 1px solid var(--mj-terracotta); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.toggle-label { font-size: 12px; font-weight: 900; color: var(--mj-terracotta); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* 表單與清單 */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.admin-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--mj-border); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-group { display: flex; gap: 5px; margin: 8px 0; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>input, select, textarea { background: #111; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 6px; font-size: 12px; outline: none; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.primary-btn { background: transparent; border: 1px solid var(--mj-olive); color: var(--mj-olive); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; cursor: pointer; transition: 0.2s; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.primary-btn:active { background: var(--mj-olive); color: #000; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.inventory-item { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-size:12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes mjFade { from { opacity:0; } to { opacity:1; } }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="mode-switcher"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="mode-btn active" onclick="switchTab('basic')"&gt;TASKS&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="mode-btn" onclick="switchTab('bedding')"&gt;SHEETS&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="mode-btn" onclick="switchTab('notes')"&gt;NOTES&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="mode-btn" onclick="switchTab('system')"&gt;DATA&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="basic" class="tab-content active"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="admin-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="bName" placeholder="任務名稱 (如：換牙刷)" style="width: 100%;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="input-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="bVal" placeholder="頻率" style="flex: 1;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="bUnit" style="flex: 1;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="1"&gt;天&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="7"&gt;週&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="30"&gt;月&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="primary-btn" onclick="addBasic()"&gt;新增任務&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="taskList"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="bedding" class="tab-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="toggle-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="toggle-label"&gt;涼墊模式開關 (優先推薦夏季款)&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="checkbox" id="coolMode" onchange="toggleCooling()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="sheet-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="font-size: 10px; font-weight: 900; color: var(--mj-text-sub);"&gt;NEXT RECOMMENDATION&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="nextSheetName" class="sheet-current"&gt;---&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="primary-btn" style="width: 100%; padding: 12px;" onclick="rotateSheet()"&gt;確認已更換&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="admin-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="font-size: 11px; font-weight: 900; color: var(--mj-olive); margin-bottom: 10px;"&gt;庫存管理 (點擊名稱編輯)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="sheetInventory" style="max-height: 150px; overflow-y: auto;"&gt;&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;hr style="border: 0; border-top: 1px solid var(--mj-border); margin: 15px 0;"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="sName" placeholder="床包名稱" style="width: 100%;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="input-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;select id="sType" style="flex: 1;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="all"&gt;四季舒服款&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;option value="summer"&gt;夏季優先款&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="primary-btn" onclick="addSheet()"&gt;存入庫存&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="notes" class="tab-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;textarea id="memo" style="width: 100%; height: 350px; background: #0a0a0a; color: #fff; padding: 18px; border-radius: 12px; border: 1px solid var(--mj-border); line-height: 1.6; outline: none;" placeholder="購物清單與備註..." oninput="saveMemo()"&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="system" class="tab-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="admin-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div style="font-size: 11px; margin-bottom: 10px; color: var(--mj-text-sub);"&gt;BASE64 備份膠囊&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;textarea id="backupCode" style="width: 100%; height: 150px; font-family: monospace; font-size: 10px; margin-bottom: 10px; color: #888;" readonly&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="primary-btn" style="width: 100%; margin-bottom: 10px;" onclick="copyBackup()"&gt;複製備份碼&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="primary-btn" style="width: 100%; border-color: var(--mj-terracotta); color: var(--mj-terracotta);" onclick="importData()"&gt;從備份還原&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let data = JSON.parse(localStorage.getItem('shift_v5_2_data')) || {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>basic: [],</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sheets: [],</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sheetIdx: 0,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>coolMode: false,</p>
+<p class="p1"><span class="Apple-converted-space">        </span>memo: ""</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function switchTab(id) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.tab-content').forEach(t =&gt; t.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.querySelectorAll('.mode-btn').forEach(b =&gt; b.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById(id).classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>event.currentTarget.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function render() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const today = new Date();</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 1. 基礎家事</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const listEl = document.getElementById('taskList');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const sorted = data.basic.map(t =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const last = new Date(t.lastDate);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const next = new Date(last.getTime() + t.freq * 86400000);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const diff = Math.floor((today - last) / 86400000);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return { ...t, next, diff };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}).sort((a, b) =&gt; a.next - b.next);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>listEl.innerHTML = sorted.map(t =&gt; `</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="task-item"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="task-name"&gt;${t.name}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="task-meta"&gt;已過 ${t.diff}d · 預計 ${t.next.getMonth()+1}/${t.next.getDate()}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="primary-btn" onclick="doneBasic('${t.name}')"&gt;DONE&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`).join('') || '&lt;div style="text-align:center; color:var(--mj-text-sub); font-size:12px; margin-top:20px;"&gt;尚無任務，請由上方新增&lt;/div&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 2. 床單管理與庫存</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const coolMode = data.coolMode;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('coolMode').checked = coolMode;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let pool = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const summerSet = data.sheets.filter(s =&gt; s.type === 'summer');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const allSet = data.sheets.filter(s =&gt; s.type === 'all');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (coolMode) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 加權：2夏季1四季</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const max = Math.max(summerSet.length, allSet.length);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for(let i=0; i&lt;max; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(summerSet[i % summerSet.length]) pool.push(summerSet[i % summerSet.length]);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(summerSet[(i+1) % summerSet.length]) pool.push(summerSet[(i+1) % summerSet.length]);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(allSet[i % allSet.length]) pool.push(allSet[i % allSet.length]);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pool = allSet.length &gt; 0 ? allSet : data.sheets;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const nextS = pool[data.sheetIdx % (pool.length || 1)] || { name: "請新增床包" };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('nextSheetName').innerText = nextS.name;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const invEl = document.getElementById('sheetInventory');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>invEl.innerHTML = data.sheets.map((s, idx) =&gt; `</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="inventory-item"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;span onclick="editSheet(${idx})" style="cursor:pointer; color: ${s.type==='summer'? 'var(--mj-terracotta)':'#fff'}; text-decoration:underline;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>${s.name} ${s.type==='summer'?'(夏)':'(通)'}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="deleteSheet(${idx})" style="background:transparent; border:none; color:#ff4444; cursor:pointer; font-size:10px;"&gt;移除&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`).join('') || '&lt;div style="color:var(--mj-text-sub); font-size:11px;"&gt;庫存空空如也&lt;/div&gt;';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 3. 其他</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('memo').value = data.memo;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>localStorage.setItem('shift_v5_2_data', JSON.stringify(data));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// --- 邏輯功能 ---</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function addBasic() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const n = document.getElementById('bName').value;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const v = parseInt(document.getElementById('bVal').value);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const u = parseInt(document.getElementById('bUnit').value);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(n &amp;&amp; v) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('bName').value = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function doneBasic(name) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>data.basic.find(t =&gt; t.name === name).lastDate = new Date().toISOString();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function addSheet() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const n = document.getElementById('sName').value;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const t = document.getElementById('sType').value;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(n) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>data.sheets.push({ name: n, type: t });</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('sName').value = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function editSheet(idx) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const s = data.sheets[idx];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const newName = prompt("修改床包名稱：", s.name);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (!newName) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const newType = confirm(`設為夏季優先款？\n(確定：是 / 取消：否)`) ? "summer" : "all";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>data.sheets[idx] = { name: newName, type: newType };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function deleteSheet(idx) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (confirm(`刪除「${data.sheets[idx].name}」？`)) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>data.sheets.splice(idx, 1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function toggleCooling() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>data.coolMode = document.getElementById('coolMode').checked;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>data.sheetIdx = 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function rotateSheet() { data.sheetIdx++; render(); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function saveMemo() { data.memo = document.getElementById('memo').value; localStorage.setItem('shift_v5_2_data', JSON.stringify(data)); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function copyBackup() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById("backupCode").select();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.execCommand("copy");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("備份碼已複製到剪貼簿。");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>function importData() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const code = prompt("請貼上 Base64 備份碼：");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if(code) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>data = JSON.parse(decodeURIComponent(escape(atob(code))));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>alert("還原成功！");</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch(e) { alert("無效的備份碼"); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>render(); // 初始渲染看板</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
