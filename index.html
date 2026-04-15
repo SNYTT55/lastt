@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SHIFT_V5.8_FINAL</title>
+    <title>SHIFT_V5.9_REFINED</title>
     <style>
         :root {
             --bg: #121214;
             --card: #1c1c1e;
+            --field: #252528; /* 輸入區專用深色 */
             --border: rgba(255, 255, 255, 0.05);
             --text-dim: #8e8e93;
             --text-main: #f2f2f7;
@@ -16,39 +17,38 @@
         }
 
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { font-family: -apple-system, "SF Pro Display", sans-serif; background: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 440px; padding: 24px 20px; padding-bottom: 60px; }
 
-        /* 導航 */
         .nav { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--border); }
-        .nav-btn { background: none; border: none; color: var(--text-dim); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; cursor: pointer; padding: 10px 0; transition: 0.3s; }
+        .nav-btn { background: none; border: none; color: var(--text-dim); font-size: 11px; font-weight: 800; cursor: pointer; padding: 10px 0; }
         .nav-btn.active { color: var(--olive); border-bottom: 2px solid var(--olive); }
 
-        .tab-content { display: none; animation: mjFade 0.3s ease; }
-        .tab-content.active { display: block; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: mjFade 0.3s ease; }
 
-        /* 核心看板 */
-        .hero-card { background: linear-gradient(145deg, #1e1e20, #161618); border-radius: 28px; padding: 30px 24px; margin-bottom: 24px; position: relative; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* 看板 */
+        .hero-card { background: linear-gradient(145deg, #1e1e20, #161618); border-radius: 28px; padding: 30px 24px; margin-bottom: 24px; position: relative; border: 1px solid var(--border); }
         .hero-label { font-size: 9px; font-weight: 800; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; }
-        .hero-title { font-size: 28px; font-weight: 200; margin: 12px 0; color: #fff; }
-        
-        .cool-toggle { position: absolute; top: 25px; right: 25px; display: flex; align-items: center; gap: 6px; }
-        .cool-toggle span { font-size: 9px; font-weight: 800; color: var(--terracotta); }
-        
-        /* 列表樣式 */
+        .hero-title { font-size: 28px; font-weight: 200; margin: 12px 0; }
+
+        /* 任務列表 */
         .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid var(--border); }
-        .item-name { font-size: 15px; font-weight: 500; cursor: pointer; }
+        .item-name { font-size: 15px; font-weight: 500; }
         .item-sub { font-size: 11px; color: var(--text-dim); font-family: monospace; margin-top: 4px; }
 
-        /* 輸入與按鈕 */
-        .admin-box { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--border); }
-        .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 15px; letter-spacing: 0.1em; }
+        /* 區隔明顯的輸入盒 */
+        .admin-drawer { background: var(--field); border-radius: 16px; padding: 18px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.03); }
+        .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 12px; }
         
-        input, select, textarea { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); padding: 8px 0; font-size: 14px; width: 100%; outline: none; margin-bottom: 15px; }
-        .btn-done { background: var(--olive); color: #121214; border: none; padding: 10px 20px; border-radius: 12px; font-size: 10px; font-weight: 800; cursor: pointer; }
-        .btn-ghost { background: none; border: 1px solid var(--olive); color: var(--olive); padding: 8px 15px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        input, select, textarea { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); padding: 8px 0; font-size: 14px; width: 100%; outline: none; margin-bottom: 12px; }
+        
+        /* 按鈕配色分級 */
+        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); padding: 8px 16px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .btn-done { background: var(--terracotta); color: #fff; border: none; padding: 10px 18px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .btn-del { background: none; border: none; color: var(--text-dim); font-size: 16px; padding: 5px 10px; cursor: pointer; opacity: 0.5; }
 
-        @keyframes mjFade { from { opacity:0; transform: translateY(5px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes mjFade { from { opacity:0; } to { opacity:1; } }
     </style>
 </head>
 <body>
@@ -61,16 +61,16 @@
     </div>
 
     <div id="basic" class="tab-content active">
-        <div class="admin-box">
-            <div class="section-title">NEW TRACKING</div>
-            <input type="text" id="bName" placeholder="任務名稱...">
-            <div style="display:flex; gap:12px;">
-                <input type="number" id="bVal" placeholder="頻率">
-                <select id="bUnit">
-                    <option value="1">天 (Days)</option>
-                    <option value="7">週 (Weeks)</option>
+        <div class="admin-drawer">
+            <div class="section-title">CREATE TASK</div>
+            <input type="text" id="bName" placeholder="例如：更換濾網...">
+            <div style="display:flex; gap:12px; align-items: flex-end;">
+                <input type="number" id="bVal" placeholder="頻率" style="flex:1;">
+                <select id="bUnit" style="flex:1;">
+                    <option value="1">天</option>
+                    <option value="7">週</option>
                 </select>
-                <button class="btn-done" style="margin-bottom:15px;" onclick="addBasic()">ADD</button>
+                <button class="btn-add" onclick="addBasic()">ADD</button>
             </div>
         </div>
         <div id="taskList"></div>
@@ -78,61 +78,47 @@
 
     <div id="bedding" class="tab-content">
         <div class="hero-card">
-            <div class="cool-toggle">
-                <span>COOLING</span>
+            <div style="position: absolute; top: 25px; right: 25px; display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 9px; color: var(--terracotta); font-weight: 800;">COOLING</span>
                 <input type="checkbox" id="coolMode" onchange="toggleCooling()">
             </div>
             <div class="hero-label">Recommended</div>
             <div id="nextSheetName" class="hero-title">---</div>
-            <div id="currentStatusBar" style="font-size:11px; color:var(--olive); font-family: monospace;">Active: ---</div>
-            <button class="btn-done" style="width:100%; margin-top:20px; padding:15px; font-size:12px;" onclick="rotateSheet()">CONFIRM ROTATION</button>
+            <div id="currentStatusBar" style="font-size:11px; color:var(--olive);">Active: ---</div>
+            <button class="btn-done" style="width:100%; margin-top:20px; padding:15px;" onclick="rotateSheet()">CONFIRM ROTATION</button>
         </div>
 
-        <div class="admin-box">
-            <div class="section-title">INVENTORY & SETTINGS</div>
-            <div id="sheetInventory" style="margin-bottom: 20px;"></div>
-            <input type="text" id="sName" placeholder="新床包名稱...">
+        <div class="admin-drawer">
+            <div class="section-title">ADD NEW PATTERN</div>
+            <input type="text" id="sName" placeholder="花色名稱...">
             <div style="display:flex; gap:10px;">
                 <select id="sType" style="flex:2;">
-                    <option value="all">四季 (All Season)</option>
-                    <option value="summer">夏季 (Summer)</option>
+                    <option value="all">四季款式</option>
+                    <option value="summer">夏季優先</option>
                 </select>
-                <button class="btn-done" onclick="addSheet()">SAVE</button>
+                <button class="btn-add" onclick="addSheet()">SAVE</button>
             </div>
         </div>
+
+        <div class="section-title" style="margin-left:5px;">INVENTORY</div>
+        <div id="sheetInventory"></div>
     </div>
 
     <div id="system" class="tab-content">
-        <div class="admin-box">
-            <div class="section-title">MANUAL OVERRIDE (手動測試區)</div>
-            <p style="font-size:11px; color:var(--text-dim); line-height:1.4;">
-                你可以點擊上方分頁中的「任務名稱」直接修改日期，或是貼上備份代碼。
-            </p>
-            <textarea id="backupInput" style="height:80px; font-family:monospace; font-size:10px; background:rgba(0,0,0,0.2); padding:10px; border-radius:10px; margin-top:10px;" placeholder="在此貼上備份碼..."></textarea>
+        <div class="admin-drawer">
+            <div class="section-title">BACKUP & RESTORE</div>
+            <textarea id="backupCode" style="height:60px; font-size:10px; color:var(--text-dim);" readonly></textarea>
             <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="btn-ghost" style="flex:1;" onclick="importData()">RESTORE</button>
-                <button class="btn-ghost" style="flex:1; border-color:var(--terracotta); color:var(--terracotta);" onclick="copyBackup()">COPY BACKUP</button>
+                <button class="btn-add" style="flex:1;" onclick="copyBackup()">COPY</button>
+                <button class="btn-add" style="flex:1;" onclick="importData()">RESTORE</button>
             </div>
-        </div>
-        
-        <div class="admin-box">
-            <div class="section-title">PRESET TEST TASK</div>
-            <button class="btn-ghost" style="width:100%;" onclick="injectTestTask()">注入一個「過期任務」來測試 DONE</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 初始化資料，如果完全沒資料，預設一些床單範本
-    let data = JSON.parse(localStorage.getItem('shift_v5_8_data')) || {
-        basic: [], 
-        sheets: [
-            {name: "莫蘭迪灰 (通)", type: "all"},
-            {name: "亞麻藍 (夏)", type: "summer"}
-        ], 
-        sheetIdx: 0, 
-        currentSheet: "None", 
-        coolMode: false
+    let data = JSON.parse(localStorage.getItem('shift_v5_9_data')) || {
+        basic: [], sheets: [], sheetIdx: 0, currentSheet: "None", coolMode: false
     };
 
     function tab(id, e) {
@@ -146,27 +132,33 @@
     function render() {
         const today = new Date();
         
-        // 1. Tasks 渲染 (含排序與天數計算)
+        // 1. Tasks 渲染
         const listEl = document.getElementById('taskList');
         const sorted = data.basic.map((t, i) => {
             const last = new Date(t.lastDate);
             const next = new Date(last.getTime() + t.freq * 86400000);
             const diff = Math.floor((today - last) / 86400000);
-            const remain = Math.ceil((next - today) / 86400000);
-            return { ...t, next, diff, remain, i };
+            return { ...t, next, diff, i };
         }).sort((a, b) => a.next - b.next);
 
-        listEl.innerHTML = sorted.map(t => `
-            <div class="item-row">
-                <div onclick="editBasic(${t.i})">
-                    <div class="item-name" style="${t.remain <= 0 ? 'color:var(--terracotta);' : ''}">${t.name}</div>
-                    <div class="item-sub">${t.diff}d past / ${t.remain <= 0 ? 'DUE NOW' : 'T-' + t.remain + 'd'}</div>
+        listEl.innerHTML = sorted.map(t => {
+            const dateStr = `${t.next.getMonth()+1}/${t.next.getDate()}`;
+            const isDue = t.next <= today;
+            return `
+                <div class="item-row">
+                    <div onclick="editBasic(${t.i})" style="flex:1;">
+                        <div class="item-name" style="${isDue ? 'color:var(--terracotta);' : ''}">${t.name}</div>
+                        <div class="item-sub">Last: ${t.diff}d ago / Next: ${dateStr}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <button class="btn-done" onclick="doneBasic(${t.i})">DONE</button>
+                        <button class="btn-del" onclick="deleteBasic(${t.i})">✕</button>
+                    </div>
                 </div>
-                <button class="btn-done" onclick="doneBasic(${t.i})">DONE</button>
-            </div>
-        `).join('') || '<div style="text-align:center; padding:30px; color:var(--text-dim); font-size:12px;">No active tasks</div>';
+            `;
+        }).join('');
 
-        // 2. Bedding 推薦邏輯 (繼承 V5.6 高階加權)
+        // 2. Bedding 推薦
         document.getElementById('coolMode').checked = data.coolMode;
         let pool = [];
         const sSet = data.sheets.filter(s => s.type === 'summer'), aSet = data.sheets.filter(s => s.type === 'all');
@@ -179,85 +171,47 @@
             }
         } else { pool = aSet.length > 0 ? aSet : data.sheets; }
 
-        const nxt = pool[data.sheetIdx % (pool.length || 1)] || { name: "Add Sheets" };
+        const nxt = pool[data.sheetIdx % (pool.length || 1)] || { name: "Empty" };
         document.getElementById('nextSheetName').innerText = nxt.name;
         document.getElementById('currentStatusBar').innerText = `Active: ${data.currentSheet}`;
 
-        // 庫存列表
+        // 庫存渲染 (中性化)
         document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
             <div class="item-row" style="padding: 10px 0;">
-                <span onclick="editSheet(${idx})" style="font-size: 13px; color:${s.type==='summer'?'var(--terracotta)':'var(--text-main)'}; text-decoration:underline;">${s.name}</span>
-                <span onclick="deleteSheet(${idx})" style="font-size: 10px; color:var(--terracotta); opacity:0.6; cursor:pointer;">REMOVE</span>
+                <span onclick="editSheet(${idx})" style="color:var(--text-main); text-decoration:underline; font-size:14px;">${s.name} <small style="color:var(--text-dim); text-decoration:none;">[${s.type==='summer'?'夏':'通'}]</small></span>
+                <button class="btn-del" onclick="deleteSheet(${idx})">✕</button>
             </div>
         `).join('');
 
-        // 資料持久化
-        localStorage.setItem('shift_v5_8_data', JSON.stringify(data));
+        localStorage.setItem('shift_v5_9_data', JSON.stringify(data));
+        document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
     }
 
-    // --- 功能函式 ---
     function addBasic() {
         const n = document.getElementById('bName').value, v = parseInt(document.getElementById('bVal').value), u = parseInt(document.getElementById('bUnit').value);
         if(n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); render(); }
     }
-    
-    function doneBasic(idx) {
-        data.basic[idx].lastDate = new Date().toISOString();
-        render();
-    }
-
+    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); render(); }
+    function deleteBasic(idx) { if(confirm("Delete Task?")) { data.basic.splice(idx, 1); render(); } }
     function editBasic(idx) {
-        const t = data.basic[idx];
-        const newName = prompt("任務名稱:", t.name);
-        const newFreq = prompt("執行頻率 (天):", t.freq);
-        if(newName) {
-            data.basic[idx].name = newName;
-            data.basic[idx].freq = parseInt(newFreq);
-            render();
-        }
+        const n = prompt("Name:", data.basic[idx].name), f = prompt("Freq (days):", data.basic[idx].freq);
+        if(n) { data.basic[idx].name = n; data.basic[idx].freq = parseInt(f); render(); }
     }
-
-    function injectTestTask() {
-        // 注入一個 20 天前執行的「測試更換牙刷」，頻率 14 天，這會讓它立刻呈現「逾期」狀態
-        const testDate = new Date();
-        testDate.setDate(testDate.getDate() - 20);
-        data.basic.push({ name: "🧪 測試逾期任務", freq: 14, lastDate: testDate.toISOString() });
-        tab('basic', { currentTarget: document.querySelector('.nav-btn') }); // 跳回首頁看結果
-    }
-
-    function rotateSheet() {
-        const nxt = document.getElementById('nextSheetName').innerText;
-        data.currentSheet = nxt;
-        data.sheetIdx++;
-        render();
-    }
-
+    function rotateSheet() { data.currentSheet = document.getElementById('nextSheetName').innerText; data.sheetIdx++; render(); }
     function toggleCooling() { data.coolMode = document.getElementById('coolMode').checked; data.sheetIdx = 0; render(); }
-    
     function addSheet() {
         const n = document.getElementById('sName').value, t = document.getElementById('sType').value;
         if(n) { data.sheets.push({ name: n, type: t }); render(); }
     }
-
     function editSheet(idx) {
-        const n = prompt("修改名稱:", data.sheets[idx].name);
-        if(n) { data.sheets[idx].name = n; data.sheets[idx].type = confirm("是否設為夏季優先款？") ? "summer" : "all"; render(); }
+        const n = prompt("Name:", data.sheets[idx].name);
+        if(n) { data.sheets[idx].name = n; data.sheets[idx].type = confirm("Summer Only?") ? "summer" : "all"; render(); }
     }
-
-    function deleteSheet(idx) { if(confirm("確定移除此床包？")) { data.sheets.splice(idx, 1); render(); } }
-
-    function copyBackup() {
-        const code = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-        navigator.clipboard.writeText(code);
-        alert("備份碼已複製到剪貼簿");
-    }
-
+    function deleteSheet(idx) { if(confirm("Remove?")) { data.sheets.splice(idx, 1); render(); } }
+    function copyBackup() { document.getElementById("backupCode").select(); document.execCommand("copy"); alert("Copied"); }
     function importData() {
-        const code = document.getElementById('backupInput').value;
-        if(code) {
-            try { data = JSON.parse(decodeURIComponent(escape(atob(code)))); render(); alert("資料恢復成功"); }
-            catch(e) { alert("無效的代碼"); }
-        }
+        const c = prompt("Paste Code:");
+        if(c) { try { data = JSON.parse(decodeURIComponent(escape(atob(c)))); render(); } catch(e) { alert("Error"); } }
     }
 
     render();
