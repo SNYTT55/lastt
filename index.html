@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SHIFT_V7.4_SPLIT_UI</title>
+    <title>SHIFT_V7.5_CONSISTENT</title>
     <style>
         :root {
             --bg: #121214; --card: #1c1c1e; --field: #252528;
@@ -14,53 +14,60 @@
         body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 440px; padding: 24px 20px; padding-bottom: 60px; }
         
-        /* 導航 */
         .nav { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--border); }
         .nav-btn { background: none; border: none; color: var(--text-dim); font-size: 11px; font-weight: 800; cursor: pointer; padding: 10px 0; }
         .nav-btn.active { color: var(--olive); border-bottom: 2px solid var(--olive); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* 分欄推薦區樣式 */
+        /* 分欄推薦區 - 雙色版 */
         .split-recommend-container { display: flex; height: 160px; gap: 12px; margin-bottom: 24px; }
         
         .current-side { 
-            flex: 1; border: 1px solid var(--border); border-radius: 24px; padding: 18px;
+            flex: 1; background: var(--olive); border-radius: 24px; padding: 18px;
             display: flex; flex-direction: column; justify-content: space-between;
+            color: var(--bg); /* 橄欖綠底配深色字較高級 */
         }
         
         .next-side { 
             flex: 1.4; background: var(--terracotta); border-radius: 24px; padding: 18px;
             display: flex; flex-direction: column; justify-content: space-between;
-            position: relative; overflow: hidden; cursor: pointer; transition: transform 0.1s;
+            position: relative; overflow: hidden; cursor: pointer; color: white;
         }
-        .next-side:active { transform: scale(0.98); }
 
-        .sheet-name-small { font-size: 15px; font-weight: 300; color: var(--text-main); line-height: 1.3; }
-        .sheet-name-large { font-size: 22px; font-weight: 700; color: white; line-height: 1.2; word-break: break-all; }
-        .days-pill { 
-            display: inline-block; font-size: 9px; font-weight: 800; color: var(--olive); 
-            background: rgba(159, 163, 138, 0.1); padding: 4px 8px; border-radius: 6px; margin-top: 8px;
+        .sheet-name-small { font-size: 16px; font-weight: 700; line-height: 1.2; }
+        .sheet-name-large { font-size: 22px; font-weight: 700; line-height: 1.2; }
+        .days-pill-dark { 
+            display: inline-block; font-size: 10px; font-weight: 900; 
+            background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 6px; 
         }
-        .action-hint { font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.6); letter-spacing: 1px; }
-        .footprint-icon { position: absolute; bottom: -5px; right: 5px; font-size: 28px; opacity: 0.15; transform: rotate(-15deg); pointer-events: none; }
+        .action-hint { font-size: 9px; font-weight: 800; opacity: 0.7; letter-spacing: 1px; }
 
-        /* 通用元件 */
+        /* 輸入框對齊校準 */
         .admin-drawer { background: var(--field); border-radius: 20px; padding: 18px; margin-bottom: 24px; border: 1px solid var(--border); }
-        .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 12px; letter-spacing: 0.1em; }
-        .input-group { display: flex; gap: 10px; align-items: center; }
-        input, select { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); padding: 8px 0; font-size: 14px; outline: none; }
-        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); padding: 8px 16px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
-        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid var(--border); }
+        .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 15px; letter-spacing: 0.1em; }
         
-        /* 彈窗樣式 */
+        .input-group { display: flex; gap: 10px; align-items: flex-end; } /* 改用 flex-end 讓底線對齊 */
+        input, select { 
+            background: transparent; border: none; border-bottom: 1px solid var(--border); 
+            color: var(--text-main); padding: 8px 0; font-size: 14px; outline: none;
+            height: 36px; line-height: 20px;
+        }
+        select { -webkit-appearance: none; cursor: pointer; color: var(--olive); font-weight: 700; }
+        
+        .btn-add { 
+            background: none; border: 1.5px solid var(--olive); color: var(--olive); 
+            height: 36px; padding: 0 16px; border-radius: 10px; font-size: 10px; 
+            font-weight: 800; cursor: pointer; display: flex; align-items: center;
+        }
+
+        /* 彈窗樣式對齊 */
         #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 100; }
         .modal-card { background: var(--card); width: 88%; max-width: 340px; padding: 25px; border-radius: 30px; border: 1px solid var(--border); }
         .modal-input { width: 100%; font-size: 18px; color: white; border: none; border-bottom: 1.5px solid var(--olive); margin-bottom: 25px; background: transparent; outline: none; padding: 8px 0; }
-        .modal-sub-row { display: flex; gap: 10px; margin-bottom: 25px; }
-        .modal-btn-row { display: flex; gap: 10px; margin-top: 10px; }
-        .modal-btn-main { flex: 2; background: var(--olive); color: var(--bg); border: none; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; }
-        .modal-btn-del { flex: 1; border: 1.5px solid var(--terracotta); color: var(--terracotta); background: none; border-radius: 12px; font-weight: 800; font-size: 11px; cursor: pointer; }
+        .modal-sub-row { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 25px; }
+        .modal-btn-main { flex: 2; background: var(--olive); color: var(--bg); border: none; height: 48px; border-radius: 14px; font-weight: 800; font-size: 11px; cursor: pointer; }
+        .modal-btn-del { flex: 1; border: 1.5px solid var(--terracotta); color: var(--terracotta); height: 48px; border-radius: 14px; font-weight: 800; font-size: 11px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -77,10 +84,12 @@
     <div id="basic" class="tab-content active">
         <div class="admin-drawer">
             <div class="section-title">NEW TASK</div>
-            <input type="text" id="bName" placeholder="任務名稱..." style="width:100%; margin-bottom:12px;">
             <div class="input-group">
-                <input type="number" id="bVal" placeholder="頻率" style="flex:1;">
-                <select id="bUnit" style="flex:1;"><option value="1">天</option><option value="7">週</option><option value="30">月</option></select>
+                <input type="text" id="bName" placeholder="任務..." style="flex:2;">
+                <input type="number" id="bVal" placeholder="頻率" style="flex:0.8;">
+                <select id="bUnit" style="flex:0.7;">
+                    <option value="1">天</option><option value="7">週</option><option value="30">月</option>
+                </select>
                 <button class="btn-add" onclick="addBasic()">ADD</button>
             </div>
         </div>
@@ -91,21 +100,21 @@
         <div class="split-recommend-container">
             <div class="current-side">
                 <div>
-                    <div class="section-title" style="margin-bottom:8px;">CURRENT</div>
+                    <div class="section-title" style="color:rgba(0,0,0,0.4); margin-bottom:4px;">CURRENT</div>
                     <div id="currentSheetName" class="sheet-name-small">---</div>
                 </div>
-                <div id="sheetDaysInfo" class="days-pill">0 DAYS</div>
+                <div id="sheetDaysInfo" class="days-pill-dark">0 DAYS</div>
             </div>
             <div class="next-side" onclick="rotateSheet()">
                 <div style="position:absolute; top:15px; right:15px; z-index:5;">
                     <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
                 </div>
                 <div>
-                    <div class="section-title" style="color:rgba(255,255,255,0.6); margin-bottom:8px;">NEXT</div>
+                    <div class="section-title" style="color:rgba(255,255,255,0.4); margin-bottom:4px;">NEXT</div>
                     <div id="nextSheetName" class="sheet-name-large">---</div>
                 </div>
                 <div class="action-hint">TAP TO ROTATE</div>
-                <div class="footprint-icon">👣</div>
+                <div style="position: absolute; bottom: -5px; right: 5px; font-size: 28px; opacity: 0.2; transform: rotate(-15deg);">👣</div>
             </div>
         </div>
 
@@ -113,7 +122,9 @@
             <div class="section-title">ADD NEW PATTERN</div>
             <div class="input-group">
                 <input type="text" id="sName" placeholder="款式..." style="flex:2;">
-                <select id="sType" style="flex:1.5;"><option value="all">四季</option><option value="summer">夏季</option></select>
+                <select id="sType" style="flex:1;">
+                    <option value="all">四季通用</option><option value="summer">夏季優先</option>
+                </select>
                 <button class="btn-add" onclick="addSheet()">SAVE</button>
             </div>
         </div>
@@ -122,20 +133,20 @@
 
     <div id="system" class="tab-content">
         <div class="admin-drawer">
-            <div class="section-title">BACKUP</div>
-            <textarea id="backupCode" rows="3" readonly style="width:100%; border:1px solid var(--border); border-radius:10px; padding:10px; font-size:10px; background:rgba(0,0,0,0.2); color:var(--text-dim); outline:none;"></textarea>
-            <button class="btn-add" style="width:100%; margin-top:12px;" onclick="copyBackup()">COPY CODE</button>
+            <div class="section-title">BACKUP CODE</div>
+            <textarea id="backupCode" rows="3" readonly style="width:100%; border:1px solid var(--border); border-radius:10px; padding:10px; font-size:10px; background:rgba(0,0,0,0.2); color:var(--text-dim); outline:none; border:none;"></textarea>
+            <button class="btn-add" style="width:100%; margin-top:12px; justify-content:center;" onclick="copyBackup()">COPY BACKUP</button>
         </div>
         <div class="admin-drawer">
-            <div class="section-title">RESTORE</div>
+            <div class="section-title">RESTORE DATA</div>
             <textarea id="importInput" rows="3" style="width:100%; border:1px solid var(--border); border-radius:10px; padding:10px; font-size:12px; background:transparent; color:white; outline:none;"></textarea>
-            <button class="btn-add" style="width:100%; margin-top:12px; border-color:var(--terracotta); color:var(--terracotta);" onclick="importData()">RESTORE</button>
+            <button class="btn-add" style="width:100%; margin-top:12px; border-color:var(--terracotta); color:var(--terracotta); justify-content:center;" onclick="importData()">RESTORE</button>
         </div>
     </div>
 </div>
 
 <script>
-    const STORAGE_KEY = 'shift_v7_4_data';
+    const STORAGE_KEY = 'shift_v7_5_data';
     let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { basic: [], sheets: [], sheetIdx: 0, currentSheet: "None", sheetLastDate: new Date().toISOString(), coolMode: false };
     let editState = { type: null, idx: null };
 
@@ -143,15 +154,14 @@
 
     function render() {
         const now = new Date();
-        // Tasks
-        const listEl = document.getElementById('taskList');
+        // Tasks 渲染
         const sortedTasks = data.basic.map((t, i) => {
             const start = new Date(t.lastDate).getTime(), freqMs = (t.freq || 1) * 86400000, end = start + freqMs;
             const progress = Math.min(Math.max(((now.getTime() - start) / freqMs) * 100, 0), 100);
             return { ...t, end: new Date(end), progress, isDue: now.getTime() >= end, i, days: Math.floor((now.getTime() - start) / 86400000) };
         }).sort((a, b) => a.end - b.end);
 
-        listEl.innerHTML = sortedTasks.map(t => `<div class="item-row">
+        document.getElementById('taskList').innerHTML = sortedTasks.map(t => `<div class="item-row">
             <div style="flex:1;" onclick="openModal('task', ${t.i})">
                 <div style="font-size:15px; ${t.isDue?'color:var(--terracotta);font-weight:bold':''}">${t.name}</div>
                 <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">${t.days} 天前 | 預計 ${t.end.getMonth()+1}/${t.end.getDate()}</div>
@@ -161,7 +171,7 @@
                 <div style="position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900;">DONE</div>
             </div></div>`).join('');
 
-        // Bedding Logic
+        // Bedding 渲染
         const sStart = new Date(data.sheetLastDate || now).getTime();
         document.getElementById('currentSheetName').innerText = data.currentSheet;
         document.getElementById('sheetDaysInfo').innerText = `${Math.floor((now.getTime() - sStart) / 86400000)} DAYS`;
@@ -186,12 +196,13 @@
         document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
     }
 
+    // Modal 與功能函式保持 V7.4 邏輯，但在 CSS 處優化了對齊
     function openModal(type, idx) {
         editState = { type, idx };
         const content = document.getElementById('modalContent');
         if (type === 'task') {
             const t = data.basic[idx];
-            content.innerHTML = `<div class="section-title">EDIT TASK</div><input type="text" id="editName" value="${t.name}" class="modal-input"><div class="section-title">FREQUENCY</div><div class="modal-sub-row"><input type="number" id="editVal" value="${t.freq}" style="flex:2; font-size:18px; color:white; border:none; border-bottom:1px solid var(--border); background:transparent; outline:none;"><select id="editUnit" style="flex:1; color:var(--olive); font-size:12px; font-weight:800;"><option value="1">天</option><option value="7">週</option><option value="30">月</option></select></div><div class="modal-btn-row"><button class="modal-btn-main" onclick="confirmEdit()">UPDATE</button><button class="modal-btn-del" onclick="deleteItem()">DEL</button></div><div style="text-align:center; margin-top:25px;"><span onclick="closeModal()" style="font-size:11px; color:var(--text-dim); cursor:pointer;">CANCEL</span></div>`;
+            content.innerHTML = `<div class="section-title">EDIT TASK</div><input type="text" id="editName" value="${t.name}" class="modal-input"><div class="section-title">FREQUENCY</div><div class="modal-sub-row"><input type="number" id="editVal" value="${t.freq}" style="flex:2;"><select id="editUnit" style="flex:1;"><option value="1">天</option><option value="7">週</option><option value="30">月</option></select></div><div class="modal-btn-row"><button class="modal-btn-main" onclick="confirmEdit()">UPDATE</button><button class="modal-btn-del" onclick="deleteItem()">DEL</button></div><div style="text-align:center; margin-top:25px;"><span onclick="closeModal()" style="font-size:11px; color:var(--text-dim); cursor:pointer;">CANCEL</span></div>`;
         } else {
             const s = data.sheets[idx];
             content.innerHTML = `<div class="section-title">EDIT BEDDING</div><input type="text" id="editName" value="${s.name}" class="modal-input"><div class="section-title">SEASONAL</div><div style="display:flex; gap:10px; margin-bottom:25px;"><button class="btn-add" style="flex:1; ${s.type==='all'?'background:var(--olive);color:var(--bg)':''}" onclick="updateSheetType('all')">四季</button><button class="btn-add" style="flex:1; ${s.type==='summer'?'background:var(--olive);color:var(--bg)':''}" onclick="updateSheetType('summer')">夏季</button></div><div class="modal-btn-row"><button class="modal-btn-main" onclick="confirmEdit()">UPDATE</button><button class="modal-btn-del" onclick="deleteItem()">DEL</button></div><div style="text-align:center; margin-top:25px;"><span onclick="closeModal()" style="font-size:11px; color:var(--text-dim); cursor:pointer;">CANCEL</span></div>`;
