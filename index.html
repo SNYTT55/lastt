@@ -185,6 +185,43 @@
     function copyBackup() { document.getElementById('backupCode').select(); document.execCommand('copy'); alert("Copied"); }
     
     render();
+
+    function openModal(type, idx) {
+    const modal = document.getElementById('modalOverlay');
+    const content = document.getElementById('modalContent');
+    const item = type === 'task' ? data.basic[idx] : data.sheets[idx];
+
+    content.innerHTML = `
+        <div class="section-title" style="margin-bottom:20px;">MANAGE ${type.toUpperCase()}</div>
+        <div style="font-size:18px; margin-bottom:25px;">${item.name}</div>
+        <div style="display:flex; gap:12px;">
+            <button class="btn-add" style="flex:1; border-color:var(--terracotta); color:var(--terracotta);" onclick="deleteItem('${type}', ${idx})">DELETE</button>
+            <button class="btn-add" style="flex:1;" onclick="closeModal()">CLOSE</button>
+        </div>
+    `;
+    modal.style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+
+function deleteItem(type, idx) {
+    const key = type === 'task' ? 'basic' : 'sheets';
+    data[key].splice(idx, 1);
+    closeModal();
+    save();
+}
+    function importData() {
+    const str = prompt("Paste backup code here:");
+    if (str) {
+        try {
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(str))));
+            data = decoded;
+            save();
+            alert("Restored successfully");
+        } catch(e) { alert("Invalid code"); }
+    }
+}
+    
 </script>
 </body>
 </html>
