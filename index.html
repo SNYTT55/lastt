@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SHIFT_V6.4_FULL_LOGIC</title>
+    <title>SHIFT_V6.6_MODAL_UI</title>
     <style>
         :root {
             --bg: #121214; --card: #1c1c1e; --field: #252528;
-            --border: rgba(255, 255, 255, 0.05); --text-dim: #8e8e93;
+            --border: rgba(255, 255, 255, 0.1); --text-dim: #8e8e93;
             --text-main: #f2f2f7; --olive: #9fa38a; --terracotta: #b36a5b; 
         }
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; overflow-x: hidden; }
         .container { width: 100%; max-width: 440px; padding: 24px 20px; padding-bottom: 60px; }
         
         /* 導航 */
@@ -21,31 +21,64 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* 區塊容器 */
-        .admin-drawer { background: var(--field); border-radius: 16px; padding: 18px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.03); }
+        .admin-drawer { background: var(--field); border-radius: 20px; padding: 18px; margin-bottom: 24px; border: 1px solid var(--border); }
         .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 12px; letter-spacing: 0.1em; }
         
-        /* 輸入元件 */
         .input-group { display: flex; gap: 10px; align-items: center; }
         input, select, textarea { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); padding: 8px 0; font-size: 14px; outline: none; }
-        textarea { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 10px; background: rgba(0,0,0,0.2); }
-
-        /* 按鈕樣式 */
-        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); padding: 8px 16px; border-radius: 10px; font-size: 10px; font-weight: 800; white-space: nowrap; cursor: pointer; }
-        .btn-set { background: rgba(159, 163, 138, 0.15); color: var(--olive); border: none; padding: 6px 10px; border-radius: 6px; font-size: 9px; font-weight: 800; cursor: pointer; }
         
+        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); padding: 8px 16px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        
+        /* 任務行樣式 */
         .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid var(--border); }
-
-        /* 進度條按鈕 */
         .btn-progress-container {
             position: relative; width: 100px; height: 36px; background: rgba(255,255,255,0.05);
-            border-radius: 8px; overflow: hidden; cursor: pointer; border: 1px solid var(--border);
+            border-radius: 10px; overflow: hidden; cursor: pointer; border: 1px solid var(--border);
         }
         .progress-fill { position: absolute; top: 0; left: 0; height: 100%; transition: width 0.3s ease; z-index: 1; }
         .btn-label { position: absolute; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; z-index: 2; }
+
+        /* 浮動編輯視窗 Modal */
+        #editModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-content {
+            background: var(--card); width: 85%; max-width: 320px; padding: 25px;
+            border-radius: 28px; border: 1px solid var(--border);
+        }
+        .modal-btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .type-pill { 
+            flex: 1; padding: 10px; text-align: center; font-size: 11px; font-weight: 800;
+            border-radius: 12px; border: 1px solid var(--border); cursor: pointer;
+        }
+        .type-pill.active { background: var(--olive); color: var(--bg); border-color: var(--olive); }
+
     </style>
 </head>
 <body>
+
+<div id="editModal">
+    <div class="modal-content">
+        <div class="section-title">EDIT PATTERN</div>
+        <input type="text" id="editName" style="width: 100%; font-size: 18px; margin-bottom: 20px; border-color: var(--olive);">
+        
+        <div class="section-title">SEASONAL TYPE</div>
+        <div class="modal-btn-group">
+            <div id="typeAll" class="type-pill" onclick="setEditType('all')">四季通用</div>
+            <div id="typeSummer" class="type-pill" onclick="setEditType('summer')">夏季優先</div>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+            <button class="btn-add" style="flex: 2; background: var(--olive); color: var(--bg); border: none;" onclick="confirmEdit()">UPDATE</button>
+            <button class="btn-add" style="flex: 1; border-color: var(--terracotta); color: var(--terracotta);" onclick="deleteCurrent()">DEL</button>
+        </div>
+        <div style="text-align: center; margin-top: 15px;">
+            <span onclick="closeModal()" style="font-size: 11px; color: var(--text-dim); cursor: pointer;">CANCEL</span>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="nav">
@@ -57,14 +90,10 @@
     <div id="basic" class="tab-content active">
         <div class="admin-drawer">
             <div class="section-title">NEW TASK</div>
-            <input type="text" id="bName" placeholder="任務名稱..." style="width: 100%; margin-bottom: 12px;">
+            <input type="text" id="bName" placeholder="任務名稱..." style="width:100%; margin-bottom:12px;">
             <div class="input-group">
                 <input type="number" id="bVal" placeholder="頻率" style="flex:1;">
-                <select id="bUnit" style="flex:1;">
-                    <option value="0.000011574">秒 (測試)</option>
-                    <option value="1" selected>天</option>
-                    <option value="7">週</option>
-                </select>
+                <select id="bUnit" style="flex:1;"><option value="0.000011574">秒</option><option value="1" selected>天</option><option value="7">週</option></select>
                 <button class="btn-add" onclick="addBasic()">ADD</button>
             </div>
         </div>
@@ -77,7 +106,6 @@
                 <span style="font-size:9px; color:var(--terracotta); font-weight:800;">COOLING</span>
                 <input type="checkbox" id="coolMode" onchange="toggleCooling()">
             </div>
-            
             <div class="section-title">RECOMMENDED</div>
             <div id="nextSheetName" style="font-size: 28px; font-weight: 200; margin: 15px 0;">---</div>
             <div id="currentStatusBar" style="font-size:11px; color:var(--olive); margin-bottom:15px;">Active: ---</div>
@@ -85,131 +113,104 @@
         </div>
 
         <div class="admin-drawer">
-            <div class="section-title">ADD PATTERN</div>
+            <div class="section-title">ADD NEW PATTERN</div>
             <div class="input-group">
                 <input type="text" id="sName" placeholder="名稱..." style="flex:2;">
-                <select id="sType" style="flex:1.5;">
-                    <option value="all">四季</option>
-                    <option value="summer">夏季</option>
-                </select>
+                <select id="sType" style="flex:1.5;"><option value="all">四季</option><option value="summer">夏季</option></select>
                 <button class="btn-add" onclick="addSheet()">SAVE</button>
             </div>
         </div>
-
-        <div class="section-title" style="padding-left:5px;">INVENTORY (Click name to edit)</div>
         <div id="sheetInventory"></div>
     </div>
 
     <div id="system" class="tab-content">
-        <div class="admin-drawer">
-            <div class="section-title">BACKUP CODE</div>
-            <textarea id="backupCode" style="height:80px; margin-bottom:15px;" readonly></textarea>
-            <button class="btn-add" style="width:100%;" onclick="copyBackup()">COPY BACKUP</button>
-        </div>
-
-        <div class="admin-drawer">
-            <div class="section-title">RESTORE DATA</div>
-            <textarea id="importInput" style="height:80px; margin-bottom:15px;" placeholder="貼上代碼..."></textarea>
-            <div style="display:flex; gap:10px;">
-                <button class="btn-add" style="flex:1; border-color:var(--terracotta); color:var(--terracotta);" onclick="importData()">RESTORE</button>
-                <button class="btn-add" style="flex:1; border-color:var(--text-dim); color:var(--text-dim);" onclick="hardReset()">RESET</button>
-            </div>
-        </div>
+        <div class="admin-drawer"><textarea id="backupCode" rows="3" readonly></textarea><button class="btn-add" style="width:100%; margin-top:12px;" onclick="copyBackup()">COPY CODE</button></div>
+        <div class="admin-drawer"><textarea id="importInput" rows="3" placeholder="貼上代碼..."></textarea><button class="btn-add" style="width:100%; margin-top:12px; border-color:var(--terracotta); color:var(--terracotta);" onclick="importData()">RESTORE</button></div>
     </div>
 </div>
 
 <script>
-    const KEY = 'shift_v6_4_data';
-    let data = JSON.parse(localStorage.getItem(KEY)) || { basic: [], sheets: [], sheetIdx: 0, currentSheet: "None", coolMode: false };
+    const STORAGE_KEY = 'shift_v6_6_data';
+    let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { basic: [], sheets: [], sheetIdx: 0, currentSheet: "None", coolMode: false };
+    let currentEditIdx = null;
+    let tempType = 'all';
 
-    function save() { localStorage.setItem(KEY, JSON.stringify(data)); render(); }
+    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); render(); }
 
     function render() {
         const now = new Date();
-        
-        // --- 任務邏輯 ---
+        // 任務
         const listEl = document.getElementById('taskList');
         const sorted = data.basic.map((t, i) => {
-            const end = new Date(t.lastDate).getTime() + (t.freq * 86400000);
-            const progress = Math.min(Math.max(((now.getTime() - new Date(t.lastDate).getTime()) / (t.freq * 86400000)) * 100, 0), 100);
+            const start = new Date(t.lastDate).getTime(), freqMs = t.freq * 86400000, end = start + freqMs;
+            const progress = Math.min(Math.max(((now.getTime() - start) / freqMs) * 100, 0), 100);
             return { ...t, end: new Date(end), progress, isDue: now.getTime() >= end, i };
         }).sort((a, b) => a.end - b.end);
 
-        listEl.innerHTML = sorted.map(t => {
-            const barColor = t.isDue ? 'var(--terracotta)' : 'rgba(159, 163, 138, 0.5)';
-            const dateStr = t.freq < 0.01 ? t.end.toLocaleTimeString() : `${t.end.getMonth()+1}/${t.end.getDate()}`;
-            return `<div class="item-row">
-                <div style="flex:1;" onclick="editBasic(${t.i})">
-                    <div style="font-size:15px; ${t.isDue?'color:var(--terracotta);font-weight:bold':''}">${t.name}</div>
-                    <div style="font-size:10px; color:var(--text-dim);">Next: ${dateStr}</div>
-                </div>
-                <div class="btn-progress-container" onclick="doneBasic(${t.i})">
-                    <div class="progress-fill" style="width:${t.progress}%; background:${barColor};"></div>
-                    <div class="btn-label">DONE</div>
-                </div>
-            </div>`;
-        }).join('');
+        listEl.innerHTML = sorted.map(t => `<div class="item-row">
+            <div style="flex:1;">
+                <div style="font-size:15px; ${t.isDue?'color:var(--terracotta);font-weight:bold':''}">${t.name}</div>
+                <div style="font-size:10px; color:var(--text-dim);">Next: ${t.freq < 0.01 ? t.end.toLocaleTimeString() : (t.end.getMonth()+1)+'/'+t.end.getDate()}</div>
+            </div>
+            <div class="btn-progress-container" onclick="doneBasic(${t.i})">
+                <div class="progress-fill" style="width:${t.progress}%; background:${t.isDue?'var(--terracotta)':'rgba(159, 163, 138, 0.5)'};"></div>
+                <div class="btn-label">DONE</div>
+            </div>
+        </div>`).join('');
 
-        // --- 床單推薦邏輯 (恢復涼墊模式) ---
-        document.getElementById('coolMode').checked = data.coolMode;
+        // 床單
         let pool = [];
         const sSet = data.sheets.filter(s => s.type === 'summer'), aSet = data.sheets.filter(s => s.type === 'all');
         if (data.coolMode && sSet.length > 0) {
             const m = Math.max(sSet.length, aSet.length);
-            for(let i=0; i<m; i++) {
-                if(sSet[i%sSet.length]) pool.push(sSet[i%sSet.length]);
-                if(aSet[i%aSet.length]) pool.push(aSet[i%aSet.length]);
-            }
+            for(let i=0; i<m; i++) { if(sSet[i%sSet.length]) pool.push(sSet[i%sSet.length]); if(aSet[i%aSet.length]) pool.push(aSet[i%aSet.length]); }
         } else { pool = aSet.length > 0 ? aSet : data.sheets; }
 
         const nxt = pool[data.sheetIdx % (pool.length || 1)] || { name: "空" };
         document.getElementById('nextSheetName').innerText = nxt.name;
         document.getElementById('currentStatusBar').innerText = `Active: ${data.currentSheet}`;
+        document.getElementById('coolMode').checked = data.coolMode;
 
-        // 庫存渲染 (點擊名稱編輯)
         document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
             <div class="item-row">
-                <span onclick="editSheet(${idx})" style="font-size:14px; text-decoration:underline;">${s.name} <small style="color:var(--text-dim)">[${s.type==='summer'?'夏':'通'}]</small></span>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-set" onclick="setActiveSheet(${idx})">SET ACTIVE</button>
-                    <button style="background:none; border:none; color:var(--terracotta); opacity:0.5;" onclick="deleteSheet(${idx})">✕</button>
-                </div>
+                <span onclick="openEditModal(${idx})" style="font-size:14px; text-decoration:underline; cursor:pointer;">${s.name} <small style="color:var(--text-dim)">[${s.type==='summer'?'夏':'通'}]</small></span>
+                <button class="btn-add" style="padding:4px 8px; border-width:1px;" onclick="setActiveSheet(${idx})">SET ACTIVE</button>
             </div>`).join('');
 
         document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
     }
 
-    // --- 功能函式 ---
-    function addBasic() {
-        const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
-        if(n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); document.getElementById('bName').value=''; save(); }
+    // Modal 邏輯
+    function openEditModal(idx) {
+        currentEditIdx = idx;
+        const s = data.sheets[idx];
+        document.getElementById('editName').value = s.name;
+        setEditType(s.type);
+        document.getElementById('editModal').style.display = 'flex';
     }
-    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
-    function editBasic(idx) { 
-        const n = prompt("任務名稱:", data.basic[idx].name);
-        if(n) { data.basic[idx].name = n; save(); }
+    function setEditType(type) {
+        tempType = type;
+        document.getElementById('typeAll').classList.toggle('active', type === 'all');
+        document.getElementById('typeSummer').classList.toggle('active', type === 'summer');
     }
+    function closeModal() { document.getElementById('editModal').style.display = 'none'; }
+    function confirmEdit() {
+        data.sheets[currentEditIdx].name = document.getElementById('editName').value;
+        data.sheets[currentEditIdx].type = tempType;
+        save(); closeModal();
+    }
+    function deleteCurrent() { if(confirm("確定刪除？")) { data.sheets.splice(currentEditIdx, 1); save(); closeModal(); } }
 
-    // 床單邏輯
+    // 核心功能
+    function addBasic() { const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value); if(n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); document.getElementById('bName').value=''; save(); } }
+    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
     function addSheet() { const n = document.getElementById('sName').value, t = document.getElementById('sType').value; if(n) { data.sheets.push({ name: n, type: t }); save(); } }
-    function toggleCooling() { data.coolMode = document.getElementById('coolMode').checked; data.sheetIdx = 0; save(); }
     function setActiveSheet(idx) { data.currentSheet = data.sheets[idx].name; data.sheetIdx = idx + 1; save(); }
     function rotateSheet() { data.currentSheet = document.getElementById('nextSheetName').innerText; data.sheetIdx++; save(); }
-    function editSheet(idx) {
-        const n = prompt("修改名稱:", data.sheets[idx].name);
-        if(n) {
-            data.sheets[idx].name = n;
-            data.sheets[idx].type = confirm("是否設為夏季優先？") ? "summer" : "all";
-            save();
-        }
-    }
-    function deleteSheet(idx) { if(confirm("確定刪除？")) { data.sheets.splice(idx, 1); save(); } }
-
-    // 系統
+    function toggleCooling() { data.coolMode = document.getElementById('coolMode').checked; data.sheetIdx = 0; save(); }
     function tab(id, e) { document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); render(); }
     function copyBackup() { document.getElementById('backupCode').select(); document.execCommand('copy'); alert("Copied"); }
     function importData() { const c = document.getElementById('importInput').value; if(c) { try { data = JSON.parse(decodeURIComponent(escape(atob(c)))); save(); alert("Success"); } catch(e) { alert("Error"); } } }
-    function hardReset() { if(confirm("全清空？")) { localStorage.removeItem(KEY); location.reload(); } }
 
     setInterval(render, 1000);
     render();
