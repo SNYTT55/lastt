@@ -3,52 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SHIFT_V5.9_REFINED</title>
+    <title>SHIFT_V6.2_PRO_TEST</title>
     <style>
         :root {
-            --bg: #121214;
-            --card: #1c1c1e;
-            --field: #252528; /* 輸入區專用深色 */
-            --border: rgba(255, 255, 255, 0.05);
-            --text-dim: #8e8e93;
-            --text-main: #f2f2f7;
-            --olive: #9fa38a;      
-            --terracotta: #b36a5b; 
+            --bg: #121214; --card: #1c1c1e; --field: #252528;
+            --border: rgba(255, 255, 255, 0.05); --text-dim: #8e8e93;
+            --text-main: #f2f2f7; --olive: #9fa38a; --terracotta: #b36a5b; 
         }
-
         * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 440px; padding: 24px 20px; padding-bottom: 60px; }
-
         .nav { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--border); }
         .nav-btn { background: none; border: none; color: var(--text-dim); font-size: 11px; font-weight: 800; cursor: pointer; padding: 10px 0; }
         .nav-btn.active { color: var(--olive); border-bottom: 2px solid var(--olive); }
-
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: mjFade 0.3s ease; }
-
-        /* 看板 */
+        .tab-content.active { display: block; }
         .hero-card { background: linear-gradient(145deg, #1e1e20, #161618); border-radius: 28px; padding: 30px 24px; margin-bottom: 24px; position: relative; border: 1px solid var(--border); }
-        .hero-label { font-size: 9px; font-weight: 800; color: var(--text-dim); letter-spacing: 0.2em; text-transform: uppercase; }
         .hero-title { font-size: 28px; font-weight: 200; margin: 12px 0; }
-
-        /* 任務列表 */
-        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid var(--border); }
-        .item-name { font-size: 15px; font-weight: 500; }
-        .item-sub { font-size: 11px; color: var(--text-dim); font-family: monospace; margin-top: 4px; }
-
-        /* 區隔明顯的輸入盒 */
         .admin-drawer { background: var(--field); border-radius: 16px; padding: 18px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.03); }
-        .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 12px; }
-        
-        input, select, textarea { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); padding: 8px 0; font-size: 14px; width: 100%; outline: none; margin-bottom: 12px; }
-        
-        /* 按鈕配色分級 */
-        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); padding: 8px 16px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid var(--border); }
         .btn-done { background: var(--terracotta); color: #fff; border: none; padding: 10px 18px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
-        .btn-del { background: none; border: none; color: var(--text-dim); font-size: 16px; padding: 5px 10px; cursor: pointer; opacity: 0.5; }
-
-        @keyframes mjFade { from { opacity:0; } to { opacity:1; } }
+        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; }
+        .btn-set { background: rgba(159, 163, 138, 0.2); color: var(--olive); border: none; padding: 4px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; cursor: pointer; }
+        input, select { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); padding: 8px 0; font-size: 14px; width: 100%; outline: none; margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -62,13 +39,14 @@
 
     <div id="basic" class="tab-content active">
         <div class="admin-drawer">
-            <div class="section-title">CREATE TASK</div>
-            <input type="text" id="bName" placeholder="例如：更換濾網...">
-            <div style="display:flex; gap:12px; align-items: flex-end;">
+            <input type="text" id="bName" placeholder="任務名稱...">
+            <div style="display:flex; gap:10px; align-items: flex-end;">
                 <input type="number" id="bVal" placeholder="頻率" style="flex:1;">
-                <select id="bUnit" style="flex:1;">
-                    <option value="1">天</option>
+                <select id="bUnit" style="flex:1.5;">
+                    <option value="0.000011574">秒 (測試用)</option>
+                    <option value="1" selected>天</option>
                     <option value="7">週</option>
+                    <option value="30">月</option>
                 </select>
                 <button class="btn-add" onclick="addBasic()">ADD</button>
             </div>
@@ -78,48 +56,111 @@
 
     <div id="bedding" class="tab-content">
         <div class="hero-card">
-            <div style="position: absolute; top: 25px; right: 25px; display: flex; align-items: center; gap: 6px;">
-                <span style="font-size: 9px; color: var(--terracotta); font-weight: 800;">COOLING</span>
-                <input type="checkbox" id="coolMode" onchange="toggleCooling()">
-            </div>
-            <div class="hero-label">Recommended</div>
+            <div style="font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em;">NEXT RECOMMENDATION</div>
             <div id="nextSheetName" class="hero-title">---</div>
             <div id="currentStatusBar" style="font-size:11px; color:var(--olive);">Active: ---</div>
-            <button class="btn-done" style="width:100%; margin-top:20px; padding:15px;" onclick="rotateSheet()">CONFIRM ROTATION</button>
+            <button class="btn-done" style="width:100%; margin-top:15px; padding:15px;" onclick="rotateSheet()">CONFIRM ROTATION</button>
         </div>
-
         <div class="admin-drawer">
-            <div class="section-title">ADD NEW PATTERN</div>
-            <input type="text" id="sName" placeholder="花色名稱...">
+            <input type="text" id="sName" placeholder="新花色名稱...">
             <div style="display:flex; gap:10px;">
-                <select id="sType" style="flex:2;">
-                    <option value="all">四季款式</option>
-                    <option value="summer">夏季優先</option>
-                </select>
+                <select id="sType" style="flex:2;"><option value="all">四季款式</option><option value="summer">夏季優先</option></select>
                 <button class="btn-add" onclick="addSheet()">SAVE</button>
             </div>
         </div>
-
-        <div class="section-title" style="margin-left:5px;">INVENTORY</div>
         <div id="sheetInventory"></div>
     </div>
 
     <div id="system" class="tab-content">
         <div class="admin-drawer">
-            <div class="section-title">BACKUP & RESTORE</div>
             <textarea id="backupCode" style="height:60px; font-size:10px; color:var(--text-dim);" readonly></textarea>
-            <div style="display:flex; gap:10px; margin-top:10px;">
-                <button class="btn-add" style="flex:1;" onclick="copyBackup()">COPY</button>
-                <button class="btn-add" style="flex:1;" onclick="importData()">RESTORE</button>
-            </div>
+            <button class="btn-add" style="width:100%; margin-top:10px;" onclick="copyBackup()">COPY DATA</button>
+            <button class="btn-add" style="width:100%; margin-top:10px; border-color:var(--terracotta); color:var(--terracotta);" onclick="importData()">RESTORE DATA</button>
         </div>
     </div>
 </div>
 
 <script>
-    let data = JSON.parse(localStorage.getItem('shift_v5_9_data')) || {
-        basic: [], sheets: [], sheetIdx: 0, currentSheet: "None", coolMode: false
+    let data = JSON.parse(localStorage.getItem('shift_v6_2_data')) || {
+        basic: [], sheets: [], sheetIdx: 0, currentSheet: "None"
     };
+
+    function save() { localStorage.setItem('shift_v6_2_data', JSON.stringify(data)); render(); }
+
+    function render() {
+        const today = new Date();
+        // 渲染任務
+        const listEl = document.getElementById('taskList');
+        const sorted = data.basic.map((t, i) => {
+            const next = new Date(new Date(t.lastDate).getTime() + t.freq * 86400000);
+            return { ...t, next, i };
+        }).sort((a, b) => a.next - b.next);
+
+        listEl.innerHTML = sorted.map(t => {
+            const isDue = t.next <= today;
+            const displayDate = t.next.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}); // 秒級測試顯示
+            const standardDate = `${t.next.getMonth()+1}/${t.next.getDate()}`;
+            return `
+                <div class="item-row">
+                    <div style="flex:1;">
+                        <div style="font-size:15px; ${isDue?'color:var(--terracotta)':''};">${t.name}</div>
+                        <div style="font-size:10px; color:var(--text-dim);">Next: ${t.freq < 0.01 ? displayDate : standardDate}</div>
+                    </div>
+                    <button class="btn-done" onclick="doneBasic(${t.i})">DONE</button>
+                </div>
+            `;
+        }).join('');
+
+        // 渲染床單
+        const pool = data.sheets;
+        const nxt = pool[data.sheetIdx % (pool.length || 1)] || { name: "請先新增床包" };
+        document.getElementById('nextSheetName').innerText = nxt.name;
+        document.getElementById('currentStatusBar').innerText = `Active: ${data.currentSheet}`;
+
+        document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
+            <div class="item-row">
+                <span style="font-size:14px;">${s.name}</span>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn-set" onclick="setActiveSheet(${idx})">SET ACTIVE</button>
+                    <button style="background:none; border:none; color:var(--terracotta); opacity:0.5;" onclick="deleteSheet(${idx})">✕</button>
+                </div>
+            </div>
+        `).join('');
+
+        document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    }
+
+    // --- 測試專用邏輯 ---
+    function addBasic() {
+        const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
+        if(n && v) {
+            data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() });
+            save();
+        }
+    }
+
+    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
+
+    // --- 床單指定邏輯 ---
+    function setActiveSheet(idx) {
+        data.currentSheet = data.sheets[idx].name;
+        // 將推薦指針設為選定項目的下一個
+        data.sheetIdx = idx + 1; 
+        save();
+    }
+
+    function rotateSheet() {
+        data.currentSheet = document.getElementById('nextSheetName').innerText;
+        data.sheetIdx++;
+        save();
+    }
+
+    function addSheet() {
+        const n = document.getElementById('sName').value, t = document.getElementById('sType').value;
+        if(n) { data.sheets.push({ name: n, type: t }); save(); }
+    }
+    
+    function deleteSheet(idx) { if(confirm("Remove?")) { data.sheets.splice(idx, 1); save(); } }
 
     function tab(id, e) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -129,92 +170,15 @@
         render();
     }
 
-    function render() {
-        const today = new Date();
-        
-        // 1. Tasks 渲染
-        const listEl = document.getElementById('taskList');
-        const sorted = data.basic.map((t, i) => {
-            const last = new Date(t.lastDate);
-            const next = new Date(last.getTime() + t.freq * 86400000);
-            const diff = Math.floor((today - last) / 86400000);
-            return { ...t, next, diff, i };
-        }).sort((a, b) => a.next - b.next);
-
-        listEl.innerHTML = sorted.map(t => {
-            const dateStr = `${t.next.getMonth()+1}/${t.next.getDate()}`;
-            const isDue = t.next <= today;
-            return `
-                <div class="item-row">
-                    <div onclick="editBasic(${t.i})" style="flex:1;">
-                        <div class="item-name" style="${isDue ? 'color:var(--terracotta);' : ''}">${t.name}</div>
-                        <div class="item-sub">Last: ${t.diff}d ago / Next: ${dateStr}</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:5px;">
-                        <button class="btn-done" onclick="doneBasic(${t.i})">DONE</button>
-                        <button class="btn-del" onclick="deleteBasic(${t.i})">✕</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        // 2. Bedding 推薦
-        document.getElementById('coolMode').checked = data.coolMode;
-        let pool = [];
-        const sSet = data.sheets.filter(s => s.type === 'summer'), aSet = data.sheets.filter(s => s.type === 'all');
-        if (data.coolMode && sSet.length > 0) {
-            const m = Math.max(sSet.length, aSet.length);
-            for(let i=0; i<m; i++) {
-                if(sSet[i%sSet.length]) pool.push(sSet[i%sSet.length]);
-                if(sSet[(i+1)%sSet.length]) pool.push(sSet[(i+1)%sSet.length]);
-                if(aSet[i%aSet.length]) pool.push(aSet[i%aSet.length]);
-            }
-        } else { pool = aSet.length > 0 ? aSet : data.sheets; }
-
-        const nxt = pool[data.sheetIdx % (pool.length || 1)] || { name: "Empty" };
-        document.getElementById('nextSheetName').innerText = nxt.name;
-        document.getElementById('currentStatusBar').innerText = `Active: ${data.currentSheet}`;
-
-        // 庫存渲染 (中性化)
-        document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
-            <div class="item-row" style="padding: 10px 0;">
-                <span onclick="editSheet(${idx})" style="color:var(--text-main); text-decoration:underline; font-size:14px;">${s.name} <small style="color:var(--text-dim); text-decoration:none;">[${s.type==='summer'?'夏':'通'}]</small></span>
-                <button class="btn-del" onclick="deleteSheet(${idx})">✕</button>
-            </div>
-        `).join('');
-
-        localStorage.setItem('shift_v5_9_data', JSON.stringify(data));
-        document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-    }
-
-    function addBasic() {
-        const n = document.getElementById('bName').value, v = parseInt(document.getElementById('bVal').value), u = parseInt(document.getElementById('bUnit').value);
-        if(n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); render(); }
-    }
-    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); render(); }
-    function deleteBasic(idx) { if(confirm("Delete Task?")) { data.basic.splice(idx, 1); render(); } }
-    function editBasic(idx) {
-        const n = prompt("Name:", data.basic[idx].name), f = prompt("Freq (days):", data.basic[idx].freq);
-        if(n) { data.basic[idx].name = n; data.basic[idx].freq = parseInt(f); render(); }
-    }
-    function rotateSheet() { data.currentSheet = document.getElementById('nextSheetName').innerText; data.sheetIdx++; render(); }
-    function toggleCooling() { data.coolMode = document.getElementById('coolMode').checked; data.sheetIdx = 0; render(); }
-    function addSheet() {
-        const n = document.getElementById('sName').value, t = document.getElementById('sType').value;
-        if(n) { data.sheets.push({ name: n, type: t }); render(); }
-    }
-    function editSheet(idx) {
-        const n = prompt("Name:", data.sheets[idx].name);
-        if(n) { data.sheets[idx].name = n; data.sheets[idx].type = confirm("Summer Only?") ? "summer" : "all"; render(); }
-    }
-    function deleteSheet(idx) { if(confirm("Remove?")) { data.sheets.splice(idx, 1); render(); } }
-    function copyBackup() { document.getElementById("backupCode").select(); document.execCommand("copy"); alert("Copied"); }
+    function copyBackup() { document.getElementById('backupCode').select(); document.execCommand('copy'); alert("Copied"); }
     function importData() {
         const c = prompt("Paste Code:");
-        if(c) { try { data = JSON.parse(decodeURIComponent(escape(atob(c)))); render(); } catch(e) { alert("Error"); } }
+        if(c) { try { data = JSON.parse(decodeURIComponent(escape(atob(c)))); save(); } catch(e) { alert("Error"); } }
     }
 
     render();
+    // 自動刷新（為了讓秒級測試能看到即時變化）
+    setInterval(render, 1000);
 </script>
 </body>
 </html>
