@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>SHIFT_V8.0_CONSISTENCY</title>
+    <title>SHIFT_V8.2_FULL_EDIT</title>
     <style>
         :root {
             --bg: #121214; --card: #1c1c1e; --field: #252528;
@@ -20,53 +20,34 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .split-recommend-container { display: flex; height: 160px; gap: 12px; margin-bottom: 24px; }
-        .side-card { border-radius: 24px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
-        .current-side { flex: 1; background: transparent; border: 1.5px solid var(--olive); color: var(--olive); }
-        .next-side { flex: 1.4; background: var(--olive); color: var(--bg); cursor: pointer; transition: transform 0.1s; }
-        .next-side:active { transform: scale(0.98); }
-
-        .sheet-name-label { font-size: 10px; font-weight: 800; opacity: 0.6; letter-spacing: 1px; }
-        .sheet-val { font-size: 20px; font-weight: 700; line-height: 1.2; word-break: break-all; margin-top: 4px; }
-        .days-pill { align-self: flex-start; font-size: 9px; font-weight: 900; background: rgba(159, 163, 138, 0.1); padding: 4px 8px; border-radius: 6px; }
-
         .admin-drawer { background: var(--field); border-radius: 20px; padding: 18px; margin-bottom: 24px; border: 1px solid var(--border); }
         .section-title { font-size: 10px; font-weight: 800; color: var(--olive); margin-bottom: 15px; letter-spacing: 0.1em; }
         
-        .input-row { 
-            display: grid; 
-            grid-template-columns: 2fr 0.8fr 0.7fr auto; 
-            gap: 12px; 
-            align-items: end; 
-        }
-
-        input, select { 
-            background: transparent; border: none; border-bottom: 1px solid var(--border); 
-            color: var(--text-main); font-size: 14px; outline: none; padding: 8px 0; 
-            width: 100%; height: 34px; border-radius: 0;
-        }
+        .input-row { display: grid; grid-template-columns: 2fr 0.8fr 0.7fr auto; gap: 12px; align-items: end; }
+        input, select { background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text-main); font-size: 14px; outline: none; padding: 8px 0; width: 100%; height: 34px; }
         
-        select { 
-            -webkit-appearance: none; cursor: pointer; color: var(--olive); font-weight: 700; 
-        }
-
-        .btn-add { 
-            background: none; border: 1.5px solid var(--olive); color: var(--olive); 
-            height: 32px; padding: 0 12px; border-radius: 10px; font-size: 10px; 
-            font-weight: 800; cursor: pointer; white-space: nowrap; transition: 0.2s;
-        }
-        .btn-add:active { opacity: 0.5; }
+        .btn-add { background: none; border: 1.5px solid var(--olive); color: var(--olive); height: 32px; padding: 0 12px; border-radius: 10px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .btn-danger { border-color: var(--terracotta); color: var(--terracotta); }
 
         .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 5px; border-bottom: 1px solid var(--border); }
         
-        /* Modal Style */
-        #modalOverlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); display:none; align-items:center; justify-content:center; z-index:100; }
-        .modal-card { background:var(--card); width:88%; max-width:340px; padding:25px; border-radius:30px; border:1px solid var(--border); }
+        /* Modal Style Update */
+        #modalOverlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); backdrop-filter:blur(15px); display:none; align-items:center; justify-content:center; z-index:100; }
+        .modal-card { background:var(--card); width:90%; max-width:340px; padding:25px; border-radius:25px; border:1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .modal-input { margin-bottom: 15px; }
+        .modal-input label { font-size: 10px; color: var(--text-dim); display: block; margin-bottom: 5px; }
+        
+        /* Bedding Specific UI */
+        .split-recommend-container { display: flex; height: 160px; gap: 12px; margin-bottom: 24px; }
+        .side-card { border-radius: 24px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+        .current-side { flex: 1; background: transparent; border: 1.5px solid var(--olive); color: var(--olive); }
+        .next-side { flex: 1.4; background: var(--olive); color: var(--bg); cursor: pointer; }
+        .sheet-val { font-size: 20px; font-weight: 700; line-height: 1.2; margin-top: 4px; }
     </style>
 </head>
 <body>
 
-<div id="modalOverlay" onclick="closeModal(event)">
+<div id="modalOverlay" onclick="closeModal()">
     <div class="modal-card" id="modalContent" onclick="event.stopPropagation()"></div>
 </div>
 
@@ -83,9 +64,7 @@
             <div class="input-row">
                 <input type="text" id="bName" placeholder="任務...">
                 <input type="number" id="bVal" placeholder="頻率">
-                <select id="bUnit">
-                    <option value="1">天</option><option value="7">週</option><option value="30">月</option>
-                </select>
+                <select id="bUnit"><option value="1">天</option><option value="7">週</option><option value="30">月</option></select>
                 <button class="btn-add" onclick="addBasic()">ADD</button>
             </div>
         </div>
@@ -95,27 +74,20 @@
     <div id="bedding" class="tab-content">
         <div class="split-recommend-container">
             <div class="side-card current-side">
-                <div><div class="sheet-name-label">CURRENT</div><div id="currentSheetName" class="sheet-val">---</div></div>
-                <div id="sheetDaysInfo" class="days-pill">0 DAYS</div>
+                <div><div style="font-size:10px;font-weight:800;opacity:0.6;">CURRENT</div><div id="currentSheetName" class="sheet-val">---</div></div>
+                <div id="sheetDaysInfo" style="font-size:9px;font-weight:900;background:rgba(159,163,138,0.1);padding:4px 8px;border-radius:6px;align-self:flex-start;">0 DAYS</div>
             </div>
             <div class="side-card next-side" onclick="rotateSheet()">
-                <div style="position:absolute; top:15px; right:15px; z-index:5;">
-                    <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
-                </div>
-                <div><div class="sheet-name-label" style="opacity:0.7">NEXT</div><div id="nextSheetName" class="sheet-val">---</div></div>
-                <div style="display:flex; justify-content:space-between; align-items:flex-end;">
-                    <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:1px;">ROTATE👣</div>
-                </div>
+                <div style="position:absolute;top:15px;right:15px;"><input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()"></div>
+                <div><div style="font-size:10px;font-weight:800;opacity:0.7;">NEXT</div><div id="nextSheetName" class="sheet-val">---</div></div>
+                <div style="font-size:9px;font-weight:800;opacity:0.8;">ROTATE👣</div>
             </div>
         </div>
-
         <div class="admin-drawer">
             <div class="section-title">NEW PATTERN</div>
             <div class="input-row">
                 <input type="text" id="sName" placeholder="款式..." style="grid-column: span 2;">
-                <select id="sType">
-                    <option value="all">四季</option><option value="summer">夏季</option>
-                </select>
+                <select id="sType"><option value="all">四季</option><option value="summer">夏季</option></select>
                 <button class="btn-add" onclick="addSheet()">ADD</button>
             </div>
         </div>
@@ -125,7 +97,7 @@
     <div id="system" class="tab-content">
         <div class="admin-drawer">
             <div class="section-title">BACKUP</div>
-            <textarea id="backupCode" rows="3" readonly style="width:100%; border:none; padding:10px; font-size:10px; background:rgba(0,0,0,0.2); color:var(--text-dim); outline:none; border-radius:10px; margin-bottom:12px;"></textarea>
+            <textarea id="backupCode" rows="3" readonly style="width:100%; border:none; padding:10px; font-size:10px; background:rgba(0,0,0,0.2); color:var(--text-dim); border-radius:10px; margin-bottom:10px;"></textarea>
             <div style="display:flex; gap:10px;">
                 <button class="btn-add" style="flex:1;" onclick="copyBackup()">COPY</button>
                 <button class="btn-add" style="flex:1;" onclick="importData()">IMPORT</button>
@@ -142,110 +114,118 @@
 
     function render() {
         const now = new Date();
-        // Render Tasks
-        const sortedTasks = data.basic.map((t, i) => {
+        const taskList = data.basic.map((t, idx) => {
             const start = new Date(t.lastDate).getTime(), freqMs = (t.freq || 1) * 86400000, end = start + freqMs;
-            const progress = Math.min(Math.max(((now.getTime() - start) / freqMs) * 100, 0), 100);
-            return { ...t, end: new Date(end), progress, isDue: now.getTime() >= end, i, days: Math.floor((now.getTime() - start) / 86400000) };
+            return { ...t, idx, end, progress: Math.min(Math.max(((now.getTime() - start) / freqMs) * 100, 0), 100) };
         }).sort((a, b) => a.end - b.end);
 
-        document.getElementById('taskList').innerHTML = sortedTasks.map(t => `<div class="item-row">
-            <div style="flex:1;" onclick="openModal('task', ${t.i})">
-                <div style="font-size:15px; ${t.isDue?'color:var(--terracotta);font-weight:bold':''}">${t.name}</div>
-                <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">${t.days} 天前 | ${t.end.getMonth()+1}/${t.end.getDate()}</div>
-            </div>
-            <div style="width:100px; height:32px; background:rgba(255,255,255,0.05); border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border); cursor:pointer;" onclick="doneBasic(${t.i})">
-                <div style="position:absolute; height:100%; width:${t.progress}%; background:${t.isDue?'var(--terracotta)':'rgba(159,163,138,0.4)'};"></div>
-                <div style="position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900;">DONE</div>
-            </div></div>`).join('');
+        document.getElementById('taskList').innerHTML = taskList.map(t => `
+            <div class="item-row">
+                <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
+                    <div style="font-size:15px; ${now.getTime()>=t.end?'color:var(--terracotta);font-weight:bold':''}">${t.name}</div>
+                    <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">${Math.floor((now.getTime()-new Date(t.lastDate).getTime())/86400000)} DAYS AGO</div>
+                </div>
+                <div style="width:100px; height:32px; background:rgba(255,255,255,0.05); border-radius:8px; position:relative; overflow:hidden; border:1px solid var(--border); cursor:pointer;" onclick="doneBasic(${t.idx})">
+                    <div style="position:absolute; height:100%; width:${t.progress}%; background:${now.getTime()>=t.end?'var(--terracotta)':'rgba(159,163,138,0.4)'};"></div>
+                    <div style="position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900;">DONE</div>
+                </div>
+            </div>`).join('');
 
-        // Render Bedding
-        const sStart = new Date(data.sheetLastDate || now).getTime();
         document.getElementById('currentSheetName').innerText = data.currentSheet;
-        document.getElementById('sheetDaysInfo').innerText = `${Math.floor((now.getTime() - sStart) / 86400000)} DAYS`;
+        document.getElementById('sheetDaysInfo').innerText = `${Math.floor((now.getTime()-new Date(data.sheetLastDate).getTime())/86400000)} DAYS`;
 
-        let pool = [];
-        const sSet = data.sheets.filter(s => s.type === 'summer'), aSet = data.sheets.filter(s => s.type === 'all');
-        if (data.coolMode && sSet.length > 0) {
-            const m = Math.max(sSet.length, aSet.length);
-            for(let i=0; i<m; i++) { if(sSet[i%sSet.length]) pool.push(sSet[i%sSet.length]); if(aSet[i%aSet.length]) pool.push(aSet[i%aSet.length]); }
-        } else { pool = aSet.length > 0 ? aSet : data.sheets; }
-
-        let recIdx = data.sheetIdx % (pool.length || 1), recSheet = pool[recIdx] || { name: "EMPTY" };
-        if (pool.length > 1 && recSheet.name === data.currentSheet) { recIdx = (recIdx + 1) % pool.length; recSheet = pool[recIdx]; }
-        document.getElementById('nextSheetName').innerText = recSheet.name;
-        document.getElementById('coolMode').checked = data.coolMode;
+        let pool = data.sheets.filter(s => !data.coolMode || s.type === 'summer' || s.type === 'all');
+        let rec = pool[data.sheetIdx % (pool.length || 1)] || { name: "EMPTY" };
+        document.getElementById('nextSheetName').innerText = rec.name;
 
         document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
             <div class="item-row">
                 <span onclick="openModal('sheet', ${idx})" style="font-size:14px; text-decoration:underline; cursor:pointer;">${s.name} <small style="color:var(--text-dim)">[${s.type==='summer'?'夏':'通'}]</small></span>
-                <button class="btn-add" style="padding:4px 8px; border-width:1px; height:auto;" onclick="setActiveSheet(${idx})">SET</button>
+                <button class="btn-add" style="padding:4px 8px; height:auto;" onclick="setActiveSheet(${idx})">SET</button>
             </div>`).join('');
         document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
     }
 
-    function tab(id, e) { document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); render(); }
-    
-    function addBasic() { 
-        const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value); 
-        if(n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); document.getElementById('bName').value=''; save(); } 
-    }
-    
-    function addSheet() { 
-        const n = document.getElementById('sName').value, t = document.getElementById('sType').value; 
-        if(n) { data.sheets.push({ name: n, type: t }); document.getElementById('sName').value=''; save(); } 
-    }
-
-    function rotateSheet() { 
-        const n = document.getElementById('nextSheetName').innerText; 
-        if(n!=="EMPTY") { data.currentSheet = n; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); } 
-    }
-
-    function setActiveSheet(idx) { data.currentSheet = data.sheets[idx].name; data.sheetIdx = idx + 1; data.sheetLastDate = new Date().toISOString(); save(); }
-    
-    function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
-    
-    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
-
-    function copyBackup() { document.getElementById('backupCode').select(); document.execCommand('copy'); alert("Backup Copied"); }
-
-    function importData() {
-        const code = prompt("Paste backup code:");
-        if(code) {
-            try {
-                data = JSON.parse(decodeURIComponent(escape(atob(code))));
-                save();
-                alert("Data Restored");
-            } catch(e) { alert("Invalid Code"); }
-        }
-    }
-
-    // Modal Logic
+    // Modal 與編輯功能
     function openModal(type, idx) {
-        const modal = document.getElementById('modalOverlay');
-        const content = document.getElementById('modalContent');
         const item = type === 'task' ? data.basic[idx] : data.sheets[idx];
-        
-        content.innerHTML = `
-            <div class="section-title">MANAGE ${type.toUpperCase()}</div>
-            <div style="font-size:18px; font-weight:700; margin-bottom:25px;">${item.name}</div>
-            <div style="display:flex; gap:12px;">
-                <button class="btn-add" style="flex:1; border-color:var(--terracotta); color:var(--terracotta);" onclick="deleteItem('${type}', ${idx})">DELETE</button>
-                <button class="btn-add" style="flex:1;" onclick="closeModal()">CLOSE</button>
-            </div>
-        `;
-        modal.style.display = 'flex';
+        let modalContent = '';
+
+        if (type === 'task') {
+            modalContent = `
+                <div class="section-title">EDIT TASK</div>
+                <div class="modal-input"><label>TASK NAME</label><input type="text" id="editName" value="${item.name}"></div>
+                <div class="modal-input"><label>FREQUENCY (DAYS)</label><input type="number" id="editFreq" value="${item.freq}"></div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn-add" style="flex:1.5;" onclick="updateItem('task', ${idx})">UPDATE</button>
+                    <button class="btn-add btn-danger" onclick="deleteItem('task', ${idx})">DELETE</button>
+                </div>
+            `;
+        } else {
+            modalContent = `
+                <div class="section-title">EDIT SHEET</div>
+                <div class="modal-input"><label>PATTERN NAME</label><input type="text" id="editName" value="${item.name}"></div>
+                <div class="modal-input"><label>TYPE</label>
+                    <select id="editType">
+                        <option value="all" ${item.type==='all'?'selected':''}>四季</option>
+                        <option value="summer" ${item.type==='summer'?'selected':''}>夏季</option>
+                    </select>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn-add" style="flex:1.5;" onclick="updateItem('sheet', ${idx})">UPDATE</button>
+                    <button class="btn-add btn-danger" onclick="deleteItem('sheet', ${idx})">DELETE</button>
+                </div>
+            `;
+        }
+        document.getElementById('modalContent').innerHTML = modalContent;
+        document.getElementById('modalOverlay').style.display = 'flex';
     }
 
-    function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+    function updateItem(type, idx) {
+        const newName = document.getElementById('editName').value;
+        if (type === 'task') {
+            data.basic[idx].name = newName;
+            data.basic[idx].freq = parseFloat(document.getElementById('editFreq').value);
+        } else {
+            data.sheets[idx].name = newName;
+            data.sheets[idx].type = document.getElementById('editType').value;
+        }
+        closeModal(); save();
+    }
 
     function deleteItem(type, idx) {
         if(confirm("Delete this?")) {
             if(type === 'task') data.basic.splice(idx, 1);
             else data.sheets.splice(idx, 1);
-            closeModal();
-            save();
+            closeModal(); save();
         }
+    }
+
+    // 基本功能
+    function tab(id, e) {
+        document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active');
+    }
+    function addBasic() {
+        const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
+        if(n && v) { data.basic.push({ name: n, freq: v*u, lastDate: new Date().toISOString() }); save(); document.getElementById('bName').value=''; }
+    }
+    function addSheet() {
+        const n = document.getElementById('sName').value, t = document.getElementById('sType').value;
+        if(n) { data.sheets.push({ name: n, type: t }); save(); document.getElementById('sName').value=''; }
+    }
+    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
+    function setActiveSheet(idx) { data.currentSheet = data.sheets[idx].name; data.sheetLastDate = new Date().toISOString(); save(); }
+    function rotateSheet() {
+        const next = document.getElementById('nextSheetName').innerText;
+        if(next !== "EMPTY") { data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); }
+    }
+    function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
+    function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+    function copyBackup() { document.getElementById('backupCode').select(); document.execCommand('copy'); alert("Copied"); }
+    function importData() {
+        const code = prompt("Paste code:");
+        if(code) { try { data = JSON.parse(decodeURIComponent(escape(atob(code)))); save(); } catch(e) { alert("Error"); } }
     }
 
     render();
