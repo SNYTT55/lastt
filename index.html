@@ -41,7 +41,7 @@
     width: 22px;   /* 增加寬度 */
     height: 22px;  /* 增加高度 */
     cursor: pointer;
-    accent-color: var(--olive); /* 設定勾選後的顏色，與你的主題呼應 */
+    accent-color: #965345; /* 設定勾選後的顏色，與你的主題呼應 */
     filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); /* 增加一點陰影讓它跳出來 */
     -webkit-appearance: checkbox; /* 確保在 iOS 上維持勾選框樣式 */
 }
@@ -191,14 +191,40 @@
             </div>`).join('');
 
         // BEDDING 渲染
-        document.getElementById('currentSheetName').innerText = data.currentSheet;
-        const sDiff = Math.floor((now.getTime() - new Date(data.sheetLastDate).getTime()) / 86400000);
-        document.getElementById('sheetDaysInfo').innerText = `${sDiff} DAYS`;
+// --- BEDDING 渲染邏輯 (V8.11 智慧季節版) ---
+document.getElementById('currentSheetName').innerText = data.currentSheet;
+const sDiff = Math.floor((now.getTime() - new Date(data.sheetLastDate).getTime()) / 86400000);
+document.getElementById('sheetDaysInfo').innerText = `${sDiff} DAYS`;
 
-        let pool = data.sheets.filter(s => !data.coolMode || s.type === 'summer' || s.type === 'all');
-        let rec = pool[data.sheetIdx % (pool.length || 1)] || { name: "EMPTY" };
-        document.getElementById('nextSheetName').innerText = rec.name;
-        document.getElementById('coolMode').checked = data.coolMode;
+// 1. 先把床單分類
+let summerSheets = data.sheets.filter(s => s.type === 'summer');
+let otherSheets = data.sheets.filter(s => s.type === 'all');
+
+let weightedPool = [];
+
+if (data.coolMode) {
+    // 【開啟涼墊模式】：夏季加重，穿插其他款
+    // 序列會是：[夏A, 夏B, 普A, 夏A, 夏B, 普B...]
+    if (summerSheets.length > 0) {
+        for (let i = 0; i < 10; i++) { 
+            summerSheets.forEach(s => weightedPool.push(s));
+            if (otherSheets.length > 0) {
+                weightedPool.push(otherSheets[i % otherSheets.length]);
+            }
+        }
+    } else {
+        weightedPool = otherSheets;
+    }
+} else {
+    // 【關閉涼墊模式】：只出現普通/四季款，夏季款完全不出現
+    weightedPool = otherSheets.length > 0 ? otherSheets : data.sheets; 
+    // (如果連普通款都沒有，才保底顯示全部，避免畫面空白)
+}
+
+// 2. 決定下一個推薦
+let rec = weightedPool.length > 0 ? weightedPool[data.sheetIdx % weightedPool.length] : { name: "EMPTY" };
+document.getElementById('nextSheetName').innerText = rec.name;
+document.getElementById('coolMode').checked = data.coolMode;
 
         document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
             <div class="item-row">
