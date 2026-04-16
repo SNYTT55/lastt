@@ -104,42 +104,41 @@
       width: 100%;
     }
 
-  .input-row-bottom {
+    .input-row-bottom {
       display: grid;
       grid-template-columns: 1fr 1fr auto;
       gap: 8px;
     }
 
-  input[type="checkbox"] {
-      appearance: none; /* 先去掉瀏覽器預設的外觀 */
+    /* --- CHECKBOX 樣式修正 --- */
+    input[type="checkbox"] {
+      appearance: none;
       -webkit-appearance: none;
-      
       width: 18px;
       height: 18px;
       cursor: pointer;
-      
-      /* 這裡設定「沒打勾」時的樣子 */
-      border: 1.5px ; /* 白色半透明框，在磚紅背景上很美 */
-      border-radius: 4px; /* 稍微圓角 */
-      background: #792f20;
+      border: 1px solid rgba(255,255,255,0.3); /* 預設細邊框 */
+      border-radius: 4px;
+      background: rgba(0,0,0,0.1); /* 沒打勾時的背景 */
       position: relative;
       outline: none;
       transition: all 0.2s ease;
-  }
-  
-  
-  /* 畫出裡面的勾勾符號 */
-  input[type="checkbox"]:checked::after {
+    }
+    
+    input[type="checkbox"]:checked {
+      background: #fff; /* 打勾後變全白 */
+      border-color: #fff;
+    }
+
+    input[type="checkbox"]:checked::after {
       content: '✔';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: var(--terracotta); /* 勾勾顏色變磚紅，剛好跟背景反轉 */
+      color: var(--terracotta); /* 勾勾顏色變磚紅 */
       font-size: 11px;
-  }
-
-    
+    }
 
     /* --- 按鈕動態效果 --- */
     .btn-add-modern, .btn-secondary, .progress-btn {
@@ -240,7 +239,7 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between; /* 讓內容與底部按鈕分開 */
+      justify-content: space-between;
       position: relative;
       overflow: hidden;
     }
@@ -254,25 +253,11 @@
       opacity: 0.9;
     }
     
-    .card-footer-btn {
-      height: 32px;
-      display: flex;
-      align-items: center;
-      font-size: 9px;
-      font-weight: 900;
-      background: rgba(0,0,0,0.1);
-      margin: 0 -16px -16px -16px; /* 填滿底部邊緣 */
-      padding: 0 16px;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-    }
-
     /* 庫存管理佈局 */
     #bedding .input-group { flex-direction: row; align-items: center; gap: 8px; }
     #bedding #sName { flex: 2; }
     #bedding #sType { flex: 1; min-width: 80px; }
     #bedding .btn-add-modern { white-space: nowrap; }
-    #bedding .input-row-bottom { display: contents; }
 
     /* --- 摺疊管理區 --- */
     .inventory-section { margin-top: 20px; border-top: 1px solid var(--border); }
@@ -356,57 +341,56 @@
       <div id="taskList"></div>
     </div>
 
-   <div id="bedding" class="tab-content">
-  <div class="split-recommend-container">
-    <div class="side-card current-side" style="display: flex; flex-direction: column; justify-content: space-between;">
-      <div>
-        <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
-        <div id="currentSheetName" class="sheet-val">---</div>
-      </div>
-      <div style="font-size: 9px; font-weight: 900; color: var(--text-dim); opacity: 0.7; padding-bottom: 4px;">
-        <span id="sheetDaysInfo">0 DAYS</span>
-      </div>
-    </div>
+    <div id="bedding" class="tab-content">
+      <div class="split-recommend-container">
+        <div class="side-card current-side">
+          <div>
+            <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
+            <div id="currentSheetName" class="sheet-val">---</div>
+          </div>
+          <div style="font-size: 9px; font-weight: 900; opacity: 0.7; padding-bottom: 4px;">
+            <span id="sheetDaysInfo">0 DAYS</span>
+          </div>
+        </div>
 
-    <div class="side-card next-side" style="display: flex; flex-direction: column; justify-content: space-between; background: var(--terracotta); border: none;">
-      <div style="position:absolute; top:12px; right:12px; z-index:10;">
-        <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
-      </div>
-      
-      <div>
-        <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT ➔ </div>
-        <div id="nextSheetName" class="sheet-val">---</div>
-      </div>
+        <div class="side-card next-side">
+          <div style="position:absolute; top:12px; right:12px; z-index:10;">
+            <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
+          </div>
+          
+          <div>
+            <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT ➔</div>
+            <div id="nextSheetName" class="sheet-val">---</div>
+          </div>
 
-      <div onclick="rotateSheet()" style="font-size: 9px; font-weight: 900; cursor: pointer; padding-bottom: 4px; display: flex; align-items: center; justify-content: flex-start; letter-spacing: 0.05em;">
-        ROTATE
-      </div>
-    </div>
-  </div>
-
-  <div class="inventory-section">
-    <div class="inventory-header" onclick="toggleInventory()">
-      <span style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em;">庫存管理 / 新增款式</span>
-      <span id="inventoryArrow" style="font-size: 8px; transition: 0.3s;">▼</span>
-    </div>
-    <div id="inventoryContent" class="inventory-content">
-      <div class="admin-drawer" style="border-radius: 12px; padding: 12px; box-shadow: none; background: #fdfdfd;">
-        <div class="input-group" style="background: transparent; padding: 0;">
-          <input type="text" id="sName" class="input-style" placeholder="款式名稱...">
-          <div class="input-row-bottom" style="grid-template-columns: 1fr auto;">
-            <select id="sType" class="input-style">
-              <option value="all">四季</option>
-              <option value="summer">夏季</option>
-            </select>
-            <button class="btn-add-modern" onclick="addSheet()">ADD</button>
+          <div onclick="rotateSheet()" style="font-size: 9px; font-weight: 900; cursor: pointer; padding-bottom: 4px; display: flex; align-items: center; letter-spacing: 0.05em;">
+            ROTATE
           </div>
         </div>
       </div>
-      <div id="sheetInventory" style="margin-top: 10px;"></div>
-    </div>
-  </div>
-</div>
 
+      <div class="inventory-section">
+        <div class="inventory-header" onclick="toggleInventory()">
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em;">庫存管理 / 新增款式</span>
+          <span id="inventoryArrow" style="font-size: 8px; transition: 0.3s;">▼</span>
+        </div>
+        <div id="inventoryContent" class="inventory-content">
+          <div class="admin-drawer" style="border-radius: 12px; padding: 12px; box-shadow: none; background: #fdfdfd;">
+            <div class="input-group" style="background: transparent; padding: 0;">
+              <input type="text" id="sName" class="input-style" placeholder="款式名稱...">
+              <div class="input-row-bottom" style="grid-template-columns: 1fr auto;">
+                <select id="sType" class="input-style">
+                  <option value="all">四季</option>
+                  <option value="summer">夏季</option>
+                </select>
+                <button class="btn-add-modern" onclick="addSheet()">ADD</button>
+              </div>
+            </div>
+          </div>
+          <div id="sheetInventory" style="margin-top: 10px;"></div>
+        </div>
+      </div>
+    </div>
 
     <div id="system" class="tab-content">
       <div class="admin-drawer">
@@ -513,7 +497,7 @@
       if (next !== "無款式") { if (window.navigator.vibrate) window.navigator.vibrate(20); data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); }
     }
 
-    function toggleCooling(e) {data.coolMode = e.target.checked;save(); }
+    function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
     function toggleInventory() { const isActive = document.getElementById('inventoryContent').classList.toggle('active'); document.getElementById('inventoryArrow').style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)'; }
     function tab(id, e) { document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
 
