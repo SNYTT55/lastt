@@ -419,32 +419,38 @@
     function render() {
       const now = new Date();
 
-      // --- TASK 渲染 ---
-      const taskList = data.basic.map((t, idx) => {
-        const last = new Date(t.lastDate);
-        const freqMs = (t.freq || 1) * 86400000;
-        const elapsed = now.getTime() - last.getTime();
-        const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
-        const isDue = elapsed >= freqMs;
-        const dueDate = new Date(last.getTime() + freqMs);
-        const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
-        const dd = String(dueDate.getDate()).padStart(2, '0');
-        const dateStr = `${mm}/${dd}`;
-        return { ...t, idx, isDue, progress, daysPast: Math.floor(elapsed / 86400000), dateStr };
-      }).sort((a, b) => (a.isDue === b.isDue ? 0 : a.isDue ? -1 : 1));
+// --- TASK 渲染 ---
+        const taskList = data.basic.map((t, idx) => {
+            const last = new Date(t.lastDate);
+            const freqMs = (t.freq || 1) * 86400000;
+            const elapsed = now.getTime() - last.getTime();
+            const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
+            const isDue = elapsed >= freqMs;
+            const dueDate = new Date(last.getTime() + freqMs);
+            
+            // 這裡加入 MM/DD 補零格式化
+            const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(dueDate.getDate()).padStart(2, '0');
+            const dateStr = `${mm}/${dd}`;
+            
+            return { ...t, idx, isDue, progress, daysPast: Math.floor(elapsed / 86400000), dateStr };
+        }).sort((a, b) => (a.isDue === b.isDue ? 0 : a.isDue ? -1 : 1));
 
-      document.getElementById('taskList').innerHTML = taskList.map(t => `
-        <div class="task-card">
-        <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
-            <div class="item-title" style="${t.isDue ? 'color:var(--terracotta); font-weight:bold' : ''}">${t.name}</div>
-            <div class="item-meta">
-                已過 ${t.daysPast} 天 ▪︎ 預計 <span style="color: #883524; font-weight: bold;">${t.dateStr}</span> 更換</div>
-          </div>
-          <div class="progress-btn" onclick="doneBasic(${t.idx})">
-            <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
-            <div class="progress-text" style="color:${t.progress > 55 ? '#fff' : 'var(--text-main)'}">RENEW</div>
-          </div>
-        </div>`).join('');
+        document.getElementById('taskList').innerHTML = taskList.map(t => `
+            <div class="task-card">
+                <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
+                    <div class="item-title" style="${t.isDue ? 'color:var(--terracotta); font-weight:bold' : ''}">${t.name}</div>
+                    
+                    <div class="item-meta" style="${t.isDue ? 'color:var(--terracotta); font-weight:800;' : ''}">
+                        已過 ${t.daysPast} 天 ▪︎ 預計 
+                        <span style="${t.isDue ? '' : 'color: #ff4d4d; font-weight: bold;'}">${t.dateStr}</span> 更換
+                    </div>
+                </div>
+                <div class="progress-btn" onclick="doneBasic(${t.idx})">
+                    <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
+                    <div class="progress-text" style="color:${t.progress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
+                </div>
+            </div>`).join('');
 
       // --- BEDDING 渲染 ---
       document.getElementById('currentSheetName').innerText = data.currentSheet || "尚未設置";
