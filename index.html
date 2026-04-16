@@ -59,7 +59,7 @@
 
     .nav-btn.active {
       color: var(--text-main);
-      border-bottom: 2px solid var(--olive);
+      border-bottom: 2px solid #883524 ;
     }
 
     .tab-content { display: none; }
@@ -332,19 +332,19 @@
       <div id="taskList"></div>
     </div>
 
-    <div id="bedding" class="tab-content">
+   <div id="bedding" class="tab-content">
   <div class="split-recommend-container">
-    <div class="side-card current-side">
+    <div class="side-card current-side" style="display: flex; flex-direction: column; justify-content: space-between;">
       <div>
         <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
         <div id="currentSheetName" class="sheet-val">---</div>
       </div>
-      <div class="card-footer-btn" style="background: rgba(0,0,0,0.03); cursor: default; color: var(--text-dim);">
+      <div style="font-size: 9px; font-weight: 900; color: var(--text-dim); opacity: 0.7; padding-bottom: 4px;">
         <span id="sheetDaysInfo">0 DAYS</span>
       </div>
     </div>
 
-    <div class="side-card next-side">
+    <div class="side-card next-side" style="display: flex; flex-direction: column; justify-content: space-between; background: var(--terracotta); border: none;">
       <div style="position:absolute; top:12px; right:12px; z-index:10;">
         <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
       </div>
@@ -354,7 +354,7 @@
         <div id="nextSheetName" class="sheet-val">---</div>
       </div>
 
-      <div class="card-footer-btn" onclick="rotateSheet()" style="background: rgba(255,255,255,0.15);">
+      <div onclick="rotateSheet()" style="font-size: 9px; font-weight: 900; cursor: pointer; padding-bottom: 4px; display: flex; align-items: center; justify-content: flex-start; letter-spacing: 0.05em;">
         ROTATE ➔
       </div>
     </div>
@@ -382,6 +382,7 @@
     </div>
   </div>
 </div>
+
 
     <div id="system" class="tab-content">
       <div class="admin-drawer">
