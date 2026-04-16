@@ -379,8 +379,8 @@
               <input type="text" id="sName" class="input-style" placeholder="款式名稱...">
               <div class="input-row-bottom" style="grid-template-columns: 1fr auto;">
                 <select id="sType" class="input-style">
-                  <option value="all">四季通用</option>
-                  <option value="summer">夏季專用</option>
+                  <option value="all">四季</option>
+                  <option value="summer">夏季</option>
                 </select>
                 <button class="btn-add-modern" onclick="addSheet()">ADD</button>
               </div>
@@ -471,7 +471,7 @@
       document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
         <div class="minimal-row">
           <div class="minimal-info" onclick="openModal('sheet', ${idx})">
-            ${s.name} <span class="minimal-tag">${s.type === 'summer' ? '夏' : '通'}</span>
+            ${s.name} <span class="minimal-tag">${s.type === 'summer' ? '☀️' : '🎈'}</span>
           </div>
           <div class="minimal-actions">
             <button class="btn-text" onclick="setActiveSheet(${idx})">SET</button>
