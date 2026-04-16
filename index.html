@@ -114,7 +114,7 @@
     }
 
     input[type="checkbox"] {
-    accent-color: var(--olive); /* 換成橄欖綠 */
+    accent-color: #883524; /* 換成橄欖綠 */
     width: 20px;               /* 稍微放大一點，比較好按 */
     height: 20px;
     cursor: pointer;
@@ -235,7 +235,14 @@
     }
 
     .current-side { background: var(--card); border: 1.2px solid var(--border); color: var(--olive); }
-    .next-side { flex: 1.4; background: var(--terracotta); opacity: 0.8; color: #fff; border: none; cursor: pointer; }
+    .next-side { 
+    flex: 1.4; 
+    background: var(--terracotta); 
+    opacity: 0.8; 
+    color: #fff; 
+    border: none; 
+    cursor: default; /* 改成預設游標，點背景沒反應 */
+}
     
     .card-footer {
       height: 24px;
@@ -362,27 +369,22 @@
 
     <div id="bedding" class="tab-content">
       <div class="split-recommend-container">
-        <div class="side-card current-side">
-          <div>
-            <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
-            <div id="currentSheetName" class="sheet-val">---</div>
-          </div>
-          <div class="card-footer">
-            <div id="sheetDaysInfo" style="background:var(--field); padding:3px 8px; border-radius:5px; color:var(--text-dim);">0 DAYS</div>
-          </div>
-        </div>
+        <div class="side-card next-side"> 
+  <div style="position:absolute; top:20px; right:16px; z-index: 10;">
+    <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
+  </div>
 
-        <div class="side-card next-side" onclick="rotateSheet()">
-          <div style="position:absolute; top:20px; right:16px;">
-            <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
-          </div>
-          <div>
-            <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT</div>
-            <div id="nextSheetName" class="sheet-val">---</div>
-          </div>
-          <div class="card-footer" style="letter-spacing:0.05em; opacity:0.9;">ROTATE ➔</div>
-        </div>
-      </div>
+  <div>
+    <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT</div>
+    <div id="nextSheetName" class="sheet-val">---</div>
+  </div>
+
+  <div class="card-footer" 
+       onclick="rotateSheet()" 
+       style="letter-spacing:0.05em; opacity:0.9; cursor: pointer; background: rgba(255,255,255,0.1); margin: 0 -16px; padding: 0 16px; width: calc(100% + 32px); height: 34px;">
+    ROTATE ➔
+  </div>
+</div>
 
       <div class="inventory-section">
         <div class="inventory-header" onclick="toggleInventory()">
