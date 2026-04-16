@@ -113,6 +113,23 @@
       gap: 8px;
     }
 
+    input[type="checkbox"] {
+    accent-color: var(--olive); /* 換成橄欖綠 */
+    width: 20px;               /* 稍微放大一點，比較好按 */
+    height: 20px;
+    cursor: pointer;
+}
+
+    /* 2. 擴大點擊熱區 */
+    .checkbox-container {
+        padding: 10px;             /* 增加周圍的透明填充，擴大感應範圍 */
+        margin: -10px;             /* 用負邊距抵銷 padding，不影響排版位置 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
     /* --- 按鈕動態效果 --- */
     .btn-add-modern, .btn-secondary, .next-side, .progress-btn {
       transition: transform 0.1s, filter 0.1s;
