@@ -59,7 +59,7 @@
 
     .nav-btn.active {
       color: var(--text-main);
-      border-bottom: 2px solid #883524 ;
+      border-bottom: 2px solid var(--olive) ;
     }
 
     .tab-content { display: none; }
@@ -110,12 +110,42 @@
       gap: 8px;
     }
 
+
     input[type="checkbox"] {
-      accent-color: #883524;
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-    }
+    appearance: none; /* 先去掉瀏覽器預設的外觀 */
+    -webkit-appearance: none;
+    
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    
+    /* 這裡設定「沒打勾」時的樣子 */
+    border: 1.5px solid rgba(255, 255, 255, 0.5); /* 白色半透明框，在磚紅背景上很美 */
+    border-radius: 4px; /* 稍微圓角 */
+    background: transparent;
+    
+    position: relative;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* 這裡設定「打勾後」的樣子 */
+input[type="checkbox"]:checked {
+    background-color: #88352 ; /* 打勾後變白底 */
+    border-color: #fff;
+}
+
+/* 畫出裡面的勾勾符號 */
+input[type="checkbox"]:checked::after {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ead7d4; /* 勾勾顏色變磚紅，剛好跟背景反轉 */
+    font-size: 12px;
+}
+    
 
     /* --- 按鈕動態效果 --- */
     .btn-add-modern, .btn-secondary, .progress-btn {
