@@ -160,15 +160,33 @@
       cursor: pointer;
     }
 
-    .btn-secondary {
+  /* --- 備份分頁按鈕自訂顏色 --- */
+    .btn-copy-custom {
       background: var(--card);
-      color: var(--text-main);
+      color: var(--olive); /* 橄欖綠 */
       border: 1px solid var(--border);
       border-radius: 8px;
       height: 34px;
       font-size: 10px;
       font-weight: 800;
       cursor: pointer;
+    }
+
+    .btn-import-custom {
+      background: var(--card);
+      color: var(--terracotta); /* 磚紅 */
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      height: 34px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* 點擊時的縮放效果 */
+    .btn-copy-custom:active, .btn-import-custom:active {
+      transform: scale(0.96) translateY(2px);
+      filter: brightness(0.9);
     }
 
     /* --- 任務卡片樣式 --- */
@@ -396,8 +414,8 @@
         <div class="input-group">
           <textarea id="backupCode" placeholder="在此貼上備份碼後點擊 IMPORT..."></textarea>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button class="btn-secondary" onclick="copyBackup()">COPY</button>
-            <button class="btn-secondary" onclick="importData()">IMPORT</button>
+            <button class="btn-copy-custom" onclick="copyBackup()">COPY</button>
+            <button class="btn-import-custom" onclick="importData()">IMPORT</button>
           </div>
         </div>
       </div>
