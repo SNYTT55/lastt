@@ -107,7 +107,44 @@
     transform: scale(0.96);
     filter: brightness(0.9);
 }
-
+        /* 折疊容器 */
+        .inventory-section { margin-top: 20px; border-top: 1px solid var(--border); }
+        .inventory-header {
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; padding: 15px 5px; color: var(--text-dim);
+        }
+        .inventory-header:hover { color: var(--olive); }
+        .inventory-content { display: none; padding-bottom: 30px; }
+        .inventory-content.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        .arrow-icon {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .arrow-icon.active {
+            transform: rotate(180deg);
+        }
+        
+        /* 極簡庫存列 */
+        .minimal-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 5px; border-bottom: 1px dashed var(--border);
+        }
+        .minimal-info { flex: 1; cursor: pointer; font-size: 13px; color: var(--text-main); }
+        .minimal-tag { font-size: 9px; opacity: 0.5; margin-left: 6px; }
+        .minimal-actions { display: flex; gap: 12px; }
+        .btn-text { 
+            background: none; border: none; padding: 0; font-size: 10px; 
+            font-weight: 800; cursor: pointer; color: var(--olive); 
+        }
+        .btn-text.delete { color: var(--terracotta); opacity: 0.6; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         /* 任務列表的 Renew 按鈕按下效果 */
         .progress-btn:active {
             transform: scale(0.95);
@@ -166,46 +203,52 @@
     </div>
 
     <div id="bedding" class="tab-content">
-        <div class="split-recommend-container">
-            <div class="side-card current-side">
-                <div>
-                    <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
-                    <div id="currentSheetName" class="sheet-val">---</div>
-                </div>
-                <div class="card-footer">
-                    <div id="sheetDaysInfo" style="background:var(--field); padding:3px 8px; border-radius:5px; color:var(--text-dim);">0 DAYS</div>
-                </div>
+    <div class="split-recommend-container">
+        <div class="side-card current-side">
+            <div>
+                <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
+                <div id="currentSheetName" class="sheet-val">---</div>
             </div>
-        
-            <div class="side-card next-side" onclick="rotateSheet()">
-                <div style="position:absolute; top:20px; right:16px;">
-                    <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
-                </div>
-                <div>
-                    <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT</div>
-                    <div id="nextSheetName" class="sheet-val">---</div>
-                </div>
-                <div class="card-footer" style="letter-spacing:0.05em; opacity:0.9;">
-                    ROTATE ➔
-                </div>
+            <div class="card-footer">
+                <div id="sheetDaysInfo" style="background:var(--field); padding:3px 8px; border-radius:5px; color:var(--text-dim);">0 DAYS</div>
             </div>
         </div>
 
-        <div class="admin-drawer">
-            <div class="section-title">NEW PATTERN</div>
-            <div class="input-group">
-                <input type="text" id="sName" class="input-style" placeholder="款式名稱...">
-                <div class="input-row-bottom" style="grid-template-columns: 1fr auto;">
-                    <select id="sType" class="input-style">
-                        <option value="all">All</option>
-                        <option value="summer">Summer</option>
-                    </select>
-                    <button class="btn-add-modern" onclick="addSheet()">ADD</button>
+        <div class="side-card next-side" onclick="rotateSheet()">
+            <div style="position:absolute; top:20px; right:16px;">
+                <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
+            </div>
+            <div>
+                <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT</div>
+                <div id="nextSheetName" class="sheet-val">---</div>
+            </div>
+            <div class="card-footer" style="letter-spacing:0.05em; opacity:0.9;">ROTATE ➔</div>
+        </div>
+    </div>
+
+    <div class="inventory-section">
+        <div class="inventory-header" onclick="toggleInventory()">
+            <span style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em;">庫存管理 / 新增款式</span>
+            <span id="inventoryArrow" style="font-size: 8px; transition: 0.3s;">▼</span>
+        </div>
+
+        <div id="inventoryContent" class="inventory-content">
+            <div class="admin-drawer" style="border-radius: 12px; padding: 12px; box-shadow: none; background: #fdfdfd;">
+                <div class="input-group" style="background: transparent; padding: 0;">
+                    <input type="text" id="sName" class="input-style" placeholder="款式名稱...">
+                    <div class="input-row-bottom" style="grid-template-columns: 1fr auto;">
+                        <select id="sType" class="input-style">
+                            <option value="all">四季通用</option>
+                            <option value="summer">夏季專用</option>
+                        </select>
+                        <button class="btn-add-modern" onclick="addSheet()">ADD</button>
+                    </div>
                 </div>
             </div>
+            <div id="sheetInventory" style="margin-top: 10px;"></div>
         </div>
-        <div id="sheetInventory"></div>
     </div>
+</div>
 
     <div id="system" class="tab-content">
         <div class="admin-drawer">
@@ -293,6 +336,8 @@
         
     }
 
+    
+
     // 功能函式 (維持 V8.17 交換站邏輯)
     function addBasic() {
         const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
@@ -336,6 +381,14 @@
         document.getElementById('modalOverlay').style.display = 'flex';
         setTimeout(() => document.getElementById('editN').select(), 100); // 自動選取文字
     }
+    
+    function toggleInventory() {
+    const content = document.getElementById('inventoryContent');
+    const arrow = document.getElementById('inventoryArrow');
+    content.classList.toggle('active');
+    arrow.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+        
     
     function updateItem(type, idx) {
         if(type === 'task') { data.basic[idx].name = document.getElementById('editN').value; data.basic[idx].freq = parseFloat(document.getElementById('editF').value); }
