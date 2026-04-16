@@ -427,15 +427,18 @@
         const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
         const isDue = elapsed >= freqMs;
         const dueDate = new Date(last.getTime() + freqMs);
-        const dateStr = dueDate.toLocaleDateString('zh-TW', { month: 'short', day: 'numeric' });
+        const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(dueDate.getDate()).padStart(2, '0');
+        const dateStr = `${mm}/${dd}`;
         return { ...t, idx, isDue, progress, daysPast: Math.floor(elapsed / 86400000), dateStr };
       }).sort((a, b) => (a.isDue === b.isDue ? 0 : a.isDue ? -1 : 1));
 
       document.getElementById('taskList').innerHTML = taskList.map(t => `
         <div class="task-card">
-          <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
+        <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
             <div class="item-title" style="${t.isDue ? 'color:var(--terracotta); font-weight:bold' : ''}">${t.name}</div>
-            <div class="item-meta">已過 ${t.daysPast} 天 ▪︎ 預計 ${t.dateStr} 更換</div>
+            <div class="item-meta">
+                已過 ${t.daysPast} 天 ▪︎ 預計 <span style="color: #883524; font-weight: bold;">${t.dateStr}</span> 更換</div>
           </div>
           <div class="progress-btn" onclick="doneBasic(${t.idx})">
             <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
