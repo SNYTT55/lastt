@@ -249,7 +249,7 @@
     .next-side { 
       flex: 1.4; 
       background: var(--terracotta); 
-      color: #fff; 
+      color: #2d110c; 
       border: none;
       opacity: 0.9;
     }
@@ -513,7 +513,7 @@
       if (next !== "無款式") { if (window.navigator.vibrate) window.navigator.vibrate(20); data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); }
     }
 
-    function toggleCooling(e) {data.coolMode = e.target.checked;localStorage.setItem(STORAGE_KEY, JSON.stringify(data));   }
+    function toggleCooling(e) {data.coolMode = e.target.checked;save(); }
     function toggleInventory() { const isActive = document.getElementById('inventoryContent').classList.toggle('active'); document.getElementById('inventoryArrow').style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)'; }
     function tab(id, e) { document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
 
