@@ -39,6 +39,13 @@
             border-radius: 8px; height: 34px; font-size: 10px; font-weight: 800; cursor: pointer;
         }
 
+        .btn-add-modern:active, 
+        .btn-secondary:active, 
+        .next-side:active,
+        .progress-btn:active {
+            transform: scale(0.96) translateY(2px); /* 縮小並向下位移 */
+            filter: brightness(0.9);
+        }
         .item-row { border-bottom: none; padding: 0; }
         .item-title { font-size: 14px; margin-bottom: 4px; }
         .item-meta { font-size: 10px; color: var(--text-dim); }
@@ -123,13 +130,12 @@
         /* 極簡庫存列 */
         .minimal-row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 5px; border-bottom: 1px dashed var(--border);
+            padding: 12px 5px; border-bottom: 1px dashed var(--border);
         }
         .minimal-info { flex: 1; cursor: pointer; font-size: 13px; color: var(--text-main); }
         .minimal-tag { font-size: 9px; opacity: 0.5; margin-left: 6px; }
-        .minimal-actions { display: flex; gap: 12px; }
         .btn-text { 
-            background: none; border: none; padding: 0; font-size: 10px; 
+            background: none; border: none; padding: 5px 10px; font-size: 10px; 
             font-weight: 800; cursor: pointer; color: var(--olive); 
         }
         .btn-text.delete { color: var(--terracotta); opacity: 0.6; }
@@ -320,13 +326,15 @@
         document.getElementById('coolMode').checked = data.coolMode;
 
         document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
-    <div class="task-card sheet-card">
-        <div style="flex:1; cursor:pointer;" onclick="openModal('sheet', ${idx})">
-            <span style="font-size:14px; font-weight:600;">${s.name}</span>
-            <div class="item-meta" style="margin-top:4px;">${s.type === 'summer' ? '夏季專用' : '四季通用'}</div>
-        </div>
-        <button class="btn-add-modern" style="padding:0 12px; height:28px; background:transparent; color:var(--olive); border:1px solid var(--olive);" onclick="setActiveSheet(${idx})">SET</button>
-    </div>`).join('');
+            <div class="minimal-row">
+                <div class="minimal-info" onclick="openModal('sheet', ${idx})">
+                    ${s.name} <span class="minimal-tag">${s.type === 'summer' ? '夏' : '通'}</span>
+                </div>
+                <div class="minimal-actions">
+                    <button class="btn-text" onclick="setActiveSheet(${idx})">SET</button>
+                    <button class="btn-text delete" onclick="deleteItem('sheet', ${idx})">DEL</button>
+                </div>
+            </div>`).join('');
         
     }
 
