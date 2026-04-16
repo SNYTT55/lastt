@@ -110,12 +110,40 @@
       gap: 8px;
     }
 
-    input[type="checkbox"] {
-      accent-color: #792f20;
+  input[type="checkbox"] {
+      appearance: none; /* 先去掉瀏覽器預設的外觀 */
+      -webkit-appearance: none;
+      
       width: 18px;
       height: 18px;
       cursor: pointer;
-    }
+      
+      /* 這裡設定「沒打勾」時的樣子 */
+      border: 1.5px ; /* 白色半透明框，在磚紅背景上很美 */
+      border-radius: 4px; /* 稍微圓角 */
+      background: transparent;
+      
+      position: relative;
+      outline: none;
+      transition: all 0.2s ease;
+  }
+  
+  /* 這裡設定「打勾後」的樣子 */
+  input[type="checkbox"]:checked {
+      background-color: #fff; /* 打勾後變白底 */
+      border-color: #fff;
+  }
+  
+  /* 畫出裡面的勾勾符號 */
+  input[type="checkbox"]:checked::after {
+      content: '✔';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--terracotta); /* 勾勾顏色變磚紅，剛好跟背景反轉 */
+      font-size: 12px;
+  }
 
     
 
