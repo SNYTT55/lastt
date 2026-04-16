@@ -14,7 +14,7 @@
       --text-dim: #92908c;
       --text-main: #4a4947;
       --olive: #708066;
-      --terracotta: #8d2612;
+      --terracotta: #983b29;
     }
 
     * {
@@ -159,7 +159,7 @@
       align-items: center;
     }
 
-    .item-title { font-size: 14px; margin-bottom: 4px; color:#128d26; font-weight:bold }
+    .item-title { font-size: 14px; margin-bottom: 4px; color:#4d5945; font-weight:bold }
     .item-meta { font-size: 10px; color:var(--text-dim); }
 
     .progress-btn {
@@ -439,7 +439,7 @@
           </div>
           <div class="progress-btn" onclick="doneBasic(${t.idx})">
             <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
-            <div class="progress-text" style="color:${t.progress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
+            <div class="progress-text" style="color:${t.progress > 50 ? '#fff' : 'var(--text-main)'}">RENEW</div>
           </div>
         </div>`).join('');
 
