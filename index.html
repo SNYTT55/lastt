@@ -17,10 +17,7 @@
       --terracotta: #983b29;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
-    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
     body {
       font-family: -apple-system, "PingFang TC", sans-serif;
@@ -37,18 +34,18 @@
       padding: 24px 20px 60px 20px;
     }
 
-    /* --- TAB 導覽列 (已優化：置中且均分) --- */
+    /* --- TAB 導覽列 --- */
     .nav {
       display: flex;
-      justify-content: center; /* 置中 */
+      justify-content: center;
       gap: 10px;
       margin-bottom: 30px;
       border-bottom: 1px solid var(--border);
     }
 
     .nav-btn {
-      flex: 1; /* 均分空間 */
-      max-width: 100px; /* 限制寬度避免過大 */
+      flex: 1;
+      max-width: 100px;
       background: none;
       border: none;
       color: var(--text-dim);
@@ -114,29 +111,19 @@
     }
 
     input[type="checkbox"] {
-    accent-color: #883524; /* 換成橄欖綠 */
-    width: 20px;               /* 稍微放大一點，比較好按 */
-    height: 20px;
-    cursor: pointer;
-}
-
-    /* 2. 擴大點擊熱區 */
-    .checkbox-container {
-        padding: 10px;             /* 增加周圍的透明填充，擴大感應範圍 */
-        margin: -10px;             /* 用負邊距抵銷 padding，不影響排版位置 */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
+      accent-color: var(--olive);
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
     }
 
     /* --- 按鈕動態效果 --- */
-    .btn-add-modern, .btn-secondary, .next-side, .progress-btn {
+    .btn-add-modern, .btn-secondary, .progress-btn {
       transition: transform 0.1s, filter 0.1s;
     }
 
-    .btn-add-modern:active, .btn-secondary:active, .next-side:active, .progress-btn:active {
-      transform: scale(0.96) translateY(2px); /* 按下時位移與縮小 */
+    .btn-add-modern:active, .btn-secondary:active, .progress-btn:active {
+      transform: scale(0.96) translateY(2px);
       filter: brightness(0.9);
     }
 
@@ -218,70 +205,53 @@
     }
 
     .sheet-val { 
-      font-size: 20px; 
+      font-size: 18px; 
       font-weight: 700; 
-      margin-top: 10px; /* ⬅️ 這裡原本可能是 4px，調大就會拉開間距 */
+      margin-top: 8px;
     }  
     
     .side-card {
       flex: 1;
       border-radius: 22px;
-      padding: 20px 16px;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      align-items: start;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between; /* 讓內容與底部按鈕分開 */
       position: relative;
       overflow: hidden;
     }
 
     .current-side { background: var(--card); border: 1.2px solid var(--border); color: var(--olive); }
     .next-side { 
-    flex: 1.4; 
-    background: var(--terracotta); 
-    opacity: 0.8; 
-    color: #fff; 
-    border: none; 
-    cursor: default; /* 改成預設游標，點背景沒反應 */
-}
+      flex: 1.4; 
+      background: var(--terracotta); 
+      color: #fff; 
+      border: none;
+      opacity: 0.9;
+    }
     
-    .card-footer {
-      height: 24px;
+    .card-footer-btn {
+      height: 32px;
       display: flex;
       align-items: center;
       font-size: 9px;
       font-weight: 900;
+      background: rgba(0,0,0,0.1);
+      margin: 0 -16px -16px -16px; /* 填滿底部邊緣 */
+      padding: 0 16px;
+      cursor: pointer;
+      letter-spacing: 0.05em;
     }
 
-    /* 專門針對床單分頁 (bedding) 的輸入框佈局 */
-    #bedding .input-group {
-        flex-direction: row;    /* 強制改為橫向排列 */
-        align-items: center;    /* 垂直居中對齊 */
-        gap: 8px;               /* 元素間的間距 */
-    }
-    
-    /* 讓名稱輸入框自動伸展，填滿剩餘空間 */
-    #bedding #sName {
-        flex: 2; 
-    }
-    
-    /* 讓下拉選單和按鈕維持固定或較小的寬度 */
-    #bedding #sType {
-        flex: 1;
-        min-width: 80px;
-    }
-    
-    #bedding .btn-add-modern {
-        white-space: nowrap; /* 確保按鈕文字不換行 */
-    }
-    
-    /* 為了讓橫向排列好看，我們取消掉原本在床單分頁裡包住輸入框的額外一層 div 的 Grid 設定 */
-    #bedding .input-row-bottom {
-        display: contents; /* 讓內層的元素直接參與外層的 flex 排版 */
-    }
+    /* 庫存管理佈局 */
+    #bedding .input-group { flex-direction: row; align-items: center; gap: 8px; }
+    #bedding #sName { flex: 2; }
+    #bedding #sType { flex: 1; min-width: 80px; }
+    #bedding .btn-add-modern { white-space: nowrap; }
+    #bedding .input-row-bottom { display: contents; }
 
-    /* --- 摺疊管理區與極簡列表 --- */
+    /* --- 摺疊管理區 --- */
     .inventory-section { margin-top: 20px; border-top: 1px solid var(--border); }
-    
     .inventory-header {
       display: flex;
       justify-content: space-between;
@@ -290,7 +260,6 @@
       padding: 15px 5px;
       color: var(--text-dim);
     }
-
     .inventory-content { display: none; padding-bottom: 30px; }
     .inventory-content.active { display: block; animation: fadeIn 0.3s ease; }
 
@@ -301,14 +270,10 @@
       padding: 12px 5px;
       border-bottom: 1px dashed var(--border);
     }
-
     .minimal-info { flex: 1; cursor: pointer; font-size: 13px; }
     .minimal-tag { font-size: 9px; opacity: 0.5; margin-left: 6px; }
     
-    .btn-text {
-      background: none; border: none; padding: 5px 10px;
-      font-size: 10px; font-weight: 800; cursor: pointer; color: var(--olive);
-    }
+    .btn-text { background: none; border: none; padding: 5px 10px; font-size: 10px; font-weight: 800; cursor: pointer; color: var(--olive); }
     .btn-text.delete { color: var(--terracotta); opacity: 0.6; }
 
     #backupCode {
@@ -320,7 +285,7 @@
 
     #modalOverlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(74, 73, 71, 0.1); backdrop-filter: blur(8px);
+      background: rgba(74,73,71, 0.1); backdrop-filter: blur(8px);
       display: none; align-items: center; justify-content: center; z-index: 100;
     }
 
@@ -369,22 +334,31 @@
 
     <div id="bedding" class="tab-content">
       <div class="split-recommend-container">
-        <div class="side-card next-side"> 
-  <div style="position:absolute; top:20px; right:16px; z-index: 10;">
-    <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
-  </div>
+        <div class="side-card current-side">
+          <div>
+            <div style="font-size:9px; font-weight:800; opacity:0.6; letter-spacing:0.1em;">CURRENT</div>
+            <div id="currentSheetName" class="sheet-val">---</div>
+          </div>
+          <div style="font-size: 9px; font-weight: 900; color: var(--text-dim); background: var(--field); padding: 4px 8px; border-radius: 5px; width: fit-content;">
+            <span id="sheetDaysInfo">0 DAYS</span>
+          </div>
+        </div>
 
-  <div>
-    <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT</div>
-    <div id="nextSheetName" class="sheet-val">---</div>
-  </div>
+        <div class="side-card next-side">
+          <div style="position:absolute; top:12px; right:12px; z-index:10;">
+            <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
+          </div>
+          
+          <div>
+            <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT</div>
+            <div id="nextSheetName" class="sheet-val">---</div>
+          </div>
 
-  <div class="card-footer" 
-       onclick="rotateSheet()" 
-       style="letter-spacing:0.05em; opacity:0.9; cursor: pointer; background: rgba(255,255,255,0.1); margin: 0 -16px; padding: 0 16px; width: calc(100% + 32px); height: 34px;">
-    ROTATE ➔
-  </div>
-</div>
+          <div class="card-footer-btn" onclick="rotateSheet()">
+            ROTATE ➔
+          </div>
+        </div>
+      </div>
 
       <div class="inventory-section">
         <div class="inventory-header" onclick="toggleInventory()">
@@ -438,37 +412,31 @@
     function render() {
       const now = new Date();
 
-// --- TASK 渲染 ---
-        const taskList = data.basic.map((t, idx) => {
-            const last = new Date(t.lastDate);
-            const freqMs = (t.freq || 1) * 86400000;
-            const elapsed = now.getTime() - last.getTime();
-            const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
-            const isDue = elapsed >= freqMs;
-            const dueDate = new Date(last.getTime() + freqMs);
-            
-            // 這裡加入 MM/DD 補零格式化
-            const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
-            const dd = String(dueDate.getDate()).padStart(2, '0');
-            const dateStr = `${mm}/${dd}`;
-            
-            return { ...t, idx, isDue, progress, daysPast: Math.floor(elapsed / 86400000), dateStr };
-        }).sort((a, b) => (a.isDue === b.isDue ? 0 : a.isDue ? -1 : 1));
+      // --- TASK 渲染 ---
+      const taskList = data.basic.map((t, idx) => {
+        const last = new Date(t.lastDate);
+        const freqMs = (t.freq || 1) * 86400000;
+        const elapsed = now.getTime() - last.getTime();
+        const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
+        const isDue = elapsed >= freqMs;
+        const dueDate = new Date(last.getTime() + freqMs);
+        const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(dueDate.getDate()).padStart(2, '0');
+        return { ...t, idx, isDue, progress, daysPast: Math.floor(elapsed / 86400000), dateStr: `${mm}/${dd}` };
+      }).sort((a, b) => (a.isDue === b.isDue ? 0 : a.isDue ? -1 : 1));
 
-    document.getElementById('taskList').innerHTML = taskList.map(t => `
+      document.getElementById('taskList').innerHTML = taskList.map(t => `
         <div class="task-card">
-            <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
-                <div class="item-title" style="${t.isDue ? 'color:var(--terracotta); font-weight:bold' : ''}">${t.name}</div>
-                
-                <div class="item-meta" style="${t.isDue ? 'color:var(--terracotta); font-weight:800;' : ''}">
-                    已過 ${t.daysPast} 天 ▪︎ 預計 
-                    <span style="${t.isDue ? '' : 'color: var(--terracotta); font-weight: bold;'}">${t.dateStr}</span> 更換
-                </div>
+          <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
+            <div class="item-title" style="${t.isDue ? 'color:var(--terracotta); font-weight:bold' : ''}">${t.name}</div>
+            <div class="item-meta" style="${t.isDue ? 'color:var(--terracotta); font-weight:800;' : ''}">
+              已過 ${t.daysPast} 天 ▪︎ 預計 <span style="${t.isDue ? '' : 'color: var(--terracotta); font-weight: bold;'}">${t.dateStr}</span> 更換
             </div>
-            <div class="progress-btn" onclick="doneBasic(${t.idx})">
-                <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
-                <div class="progress-text" style="color:${t.progress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
-            </div>
+          </div>
+          <div class="progress-btn" onclick="doneBasic(${t.idx})">
+            <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
+            <div class="progress-text" style="color:${t.progress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
+          </div>
         </div>`).join('');
 
       // --- BEDDING 渲染 ---
@@ -481,9 +449,8 @@
 
       if (data.coolMode) {
         if (summerSheets.length > 0) {
-          for (let i = 0; i < 10; i++) {
-            weightedPool.push(summerSheets[i % summerSheets.length]);
-            weightedPool.push(summerSheets[(i + 1) % summerSheets.length]);
+          for (let i = 0; i < 5; i++) {
+            weightedPool.push(...summerSheets);
             if (otherSheets.length > 0) weightedPool.push(otherSheets[i % otherSheets.length]);
           }
         } else { weightedPool = otherSheets; }
@@ -495,7 +462,6 @@
       document.getElementById('nextSheetName').innerText = rec.name;
       document.getElementById('coolMode').checked = data.coolMode;
 
-      // 極簡庫存列表渲染
       document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
         <div class="minimal-row">
           <div class="minimal-info" onclick="openModal('sheet', ${idx})">
@@ -510,129 +476,42 @@
 
     // --- 功能函式 ---
     function addBasic() {
-      const n = document.getElementById('bName').value, 
-            v = parseFloat(document.getElementById('bVal').value), 
-            u = parseFloat(document.getElementById('bUnit').value);
-      if (n && v) {
-        data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() });
-        save();
-        document.getElementById('bName').value = '';
-        document.getElementById('bVal').value = '';
-      }
+      const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
+      if (n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); save(); document.getElementById('bName').value = ''; document.getElementById('bVal').value = ''; }
     }
 
-    function doneBasic(idx) {
-      if (window.navigator.vibrate) window.navigator.vibrate(10);
-      data.basic[idx].lastDate = new Date().toISOString();
-      save();
-    }
-
-    function addSheet() {
-      const n = document.getElementById('sName').value, 
-            t = document.getElementById('sType').value;
-      if (n) {
-        data.sheets.push({ name: n, type: t });
-        save();
-        document.getElementById('sName').value = '';
-      }
-    }
-
-    function setActiveSheet(idx) {
-      data.currentSheet = data.sheets[idx].name;
-      data.sheetLastDate = new Date().toISOString();
-      save();
-    }
-
+    function doneBasic(idx) { if (window.navigator.vibrate) window.navigator.vibrate(10); data.basic[idx].lastDate = new Date().toISOString(); save(); }
+    function addSheet() { const n = document.getElementById('sName').value, t = document.getElementById('sType').value; if (n) { data.sheets.push({ name: n, type: t }); save(); document.getElementById('sName').value = ''; } }
+    function setActiveSheet(idx) { data.currentSheet = data.sheets[idx].name; data.sheetLastDate = new Date().toISOString(); save(); }
+    
     function rotateSheet() {
       const next = document.getElementById('nextSheetName').innerText;
-      if (next !== "無款式") {
-        if (window.navigator.vibrate) window.navigator.vibrate(20);
-        data.currentSheet = next;
-        data.sheetIdx++;
-        data.sheetLastDate = new Date().toISOString();
-        save();
-      }
+      if (next !== "無款式") { if (window.navigator.vibrate) window.navigator.vibrate(20); data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); }
     }
 
-    function toggleCooling(e) {
-      data.coolMode = e.target.checked;
-      save();
-    }
-
-    function toggleInventory() {
-      const content = document.getElementById('inventoryContent');
-      const arrow = document.getElementById('inventoryArrow');
-      const isActive = content.classList.toggle('active');
-      arrow.style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-
-    function tab(id, e) {
-      document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      e.currentTarget.classList.add('active');
-    }
+    function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
+    function toggleInventory() { const isActive = document.getElementById('inventoryContent').classList.toggle('active'); document.getElementById('inventoryArrow').style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)'; }
+    function tab(id, e) { document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
 
     function openModal(type, idx) {
       const item = type === 'task' ? data.basic[idx] : data.sheets[idx];
       const isTask = type === 'task';
       let content = `
         <div class="section-title">EDIT ${isTask ? 'TASK' : 'PATTERN'}</div>
-        <div style="margin-bottom: 15px;">
-          <label style="font-size: 9px; color: var(--olive); font-weight: 800;">NAME</label>
-          <input type="text" id="editN" class="input-style" value="${item.name}">
+        <div style="margin-bottom: 15px;"><label style="font-size: 9px; color: var(--olive); font-weight: 800;">NAME</label><input type="text" id="editN" class="input-style" value="${item.name}"></div>
+        <div style="margin-bottom: 20px;"><label style="font-size: 9px; color: var(--olive); font-weight: 800;">${isTask ? 'FREQ (DAYS)' : 'SEASON'}</label>
+          ${isTask ? `<input type="number" id="editF" class="input-style" value="${item.freq}">` : `<select id="editT" class="input-style"><option value="all" ${item.type === 'all' ? 'selected' : ''}>四季</option><option value="summer" ${item.type === 'summer' ? 'selected' : ''}>夏季</option></select>`}
         </div>
-        <div style="margin-bottom: 20px;">
-          <label style="font-size: 9px; color: var(--olive); font-weight: 800;">${isTask ? 'FREQ (DAYS)' : 'SEASON'}</label>
-          ${isTask ? `<input type="number" id="editF" class="input-style" value="${item.freq}">` : 
-          `<select id="editT" class="input-style"><option value="all" ${item.type === 'all' ? 'selected' : ''}>四季</option><option value="summer" ${item.type === 'summer' ? 'selected' : ''}>夏季</option></select>`}
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <button class="btn-add-modern" style="width: 100%; height: 40px;" onclick="updateItem('${type}', ${idx})">SAVE CHANGES</button>
-          <button class="btn-secondary" style="width: 100%; height: 34px; color: var(--terracotta);" onclick="deleteItem('${type}', ${idx})">DELETE</button>
-        </div>`;
+        <div style="display: flex; flex-direction: column; gap: 10px;"><button class="btn-add-modern" style="width: 100%; height: 40px;" onclick="updateItem('${type}', ${idx})">SAVE CHANGES</button><button class="btn-secondary" style="width: 100%; height: 34px; color: var(--terracotta);" onclick="deleteItem('${type}', ${idx})">DELETE</button></div>`;
       document.getElementById('modalContent').innerHTML = content;
       document.getElementById('modalOverlay').style.display = 'flex';
     }
 
-    function updateItem(type, idx) {
-      if (type === 'task') {
-        data.basic[idx].name = document.getElementById('editN').value;
-        data.basic[idx].freq = parseFloat(document.getElementById('editF').value);
-      } else {
-        data.sheets[idx].name = document.getElementById('editN').value;
-        data.sheets[idx].type = document.getElementById('editT').value;
-      }
-      closeModal();
-      save();
-    }
-
-    function deleteItem(type, idx) {
-      if (confirm("確定刪除？")) {
-        data[type === 'task' ? 'basic' : 'sheets'].splice(idx, 1);
-        closeModal();
-        save();
-      }
-    }
-
+    function updateItem(type, idx) { if (type === 'task') { data.basic[idx].name = document.getElementById('editN').value; data.basic[idx].freq = parseFloat(document.getElementById('editF').value); } else { data.sheets[idx].name = document.getElementById('editN').value; data.sheets[idx].type = document.getElementById('editT').value; } closeModal(); save(); }
+    function deleteItem(type, idx) { if (confirm("確定刪除？")) { data[type === 'task' ? 'basic' : 'sheets'].splice(idx, 1); closeModal(); save(); } }
     function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
-
-    function copyBackup() {
-      const code = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
-      const box = document.getElementById('backupCode');
-      box.value = code; box.select(); document.execCommand('copy');
-      alert("備份碼已完成複製！");
-    }
-
-    function importData() {
-      const box = document.getElementById('backupCode');
-      const code = box.value.trim();
-      try {
-        data = JSON.parse(decodeURIComponent(escape(atob(code))));
-        save();
-        box.value = "";
-        alert("資料還原成功！");
-      } catch (e) { alert("代碼無效"); }
-    }
+    function copyBackup() { const code = btoa(unescape(encodeURIComponent(JSON.stringify(data)))); const box = document.getElementById('backupCode'); box.value = code; box.select(); document.execCommand('copy'); alert("備份碼已複製！"); }
+    function importData() { const box = document.getElementById('backupCode'); const code = box.value.trim(); try { data = JSON.parse(decodeURIComponent(escape(atob(code)))); save(); box.value = ""; alert("資料還原成功！"); } catch (e) { alert("代碼無效"); } }
 
     render();
   </script>
