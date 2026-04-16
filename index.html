@@ -132,18 +132,16 @@
 /* 這裡設定「打勾後」的樣子 */
 input[type="checkbox"]:checked {
     background-color: #88352 ; /* 打勾後變白底 */
-    border-color: #fff;
 }
 
 /* 畫出裡面的勾勾符號 */
 input[type="checkbox"]:checked::after {
-    content: '✔';
+    content: '✔'; color: #ead7d4; /* 勾勾顏色變磚紅，剛好跟背景反轉 */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #ead7d4; /* 勾勾顏色變磚紅，剛好跟背景反轉 */
-    font-size: 12px;
+    font-size: 10px;
 }
     
 
