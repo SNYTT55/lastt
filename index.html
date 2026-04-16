@@ -121,18 +121,12 @@
       /* 這裡設定「沒打勾」時的樣子 */
       border: 1.5px ; /* 白色半透明框，在磚紅背景上很美 */
       border-radius: 4px; /* 稍微圓角 */
-      background: transparent;
-      
+      background: #792f20;
       position: relative;
       outline: none;
       transition: all 0.2s ease;
   }
   
-  /* 這裡設定「打勾後」的樣子 */
-  input[type="checkbox"]:checked {
-      background-color: #fff; /* 打勾後變白底 */
-      border-color: #fff;
-  }
   
   /* 畫出裡面的勾勾符號 */
   input[type="checkbox"]:checked::after {
@@ -142,7 +136,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: var(--terracotta); /* 勾勾顏色變磚紅，剛好跟背景反轉 */
-      font-size: 12px;
+      font-size: 11px;
   }
 
     
@@ -519,7 +513,7 @@
       if (next !== "無款式") { if (window.navigator.vibrate) window.navigator.vibrate(20); data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); }
     }
 
-    function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
+    function toggleCooling(e) {data.coolMode = e.target.checked;localStorage.setItem(STORAGE_KEY, JSON.stringify(data));   }
     function toggleInventory() { const isActive = document.getElementById('inventoryContent').classList.toggle('active'); document.getElementById('inventoryArrow').style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)'; }
     function tab(id, e) { document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
 
