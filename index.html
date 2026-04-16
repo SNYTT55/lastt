@@ -201,9 +201,9 @@
     }
 
     .sheet-val { 
-      font-size: 18px; 
+      font-size: 20px; 
       font-weight: 700; 
-      margin-top: 8px; /* ⬅️ 這裡原本可能是 4px，調大就會拉開間距 */
+      margin-top: 10px; /* ⬅️ 這裡原本可能是 4px，調大就會拉開間距 */
     }  
     
     .side-card {
@@ -226,6 +226,33 @@
       align-items: center;
       font-size: 9px;
       font-weight: 900;
+    }
+
+    /* 專門針對床單分頁 (bedding) 的輸入框佈局 */
+    #bedding .input-group {
+        flex-direction: row;    /* 強制改為橫向排列 */
+        align-items: center;    /* 垂直居中對齊 */
+        gap: 8px;               /* 元素間的間距 */
+    }
+    
+    /* 讓名稱輸入框自動伸展，填滿剩餘空間 */
+    #bedding #sName {
+        flex: 2; 
+    }
+    
+    /* 讓下拉選單和按鈕維持固定或較小的寬度 */
+    #bedding #sType {
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    #bedding .btn-add-modern {
+        white-space: nowrap; /* 確保按鈕文字不換行 */
+    }
+    
+    /* 為了讓橫向排列好看，我們取消掉原本在床單分頁裡包住輸入框的額外一層 div 的 Grid 設定 */
+    #bedding .input-row-bottom {
+        display: contents; /* 讓內層的元素直接參與外層的 flex 排版 */
     }
 
     /* --- 摺疊管理區與極簡列表 --- */
