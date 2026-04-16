@@ -122,8 +122,6 @@
     /* 這裡設定「沒打勾」時的樣子 */
     border: 1.5px solid rgba(255, 255, 255, 0.5); /* 白色半透明框，在磚紅背景上很美 */
     border-radius: 4px; /* 稍微圓角 */
-    background: transparent;
-    
     position: relative;
     outline: none;
     transition: all 0.2s ease;
@@ -136,7 +134,7 @@ input[type="checkbox"]:checked {
 
 /* 畫出裡面的勾勾符號 */
 input[type="checkbox"]:checked::after {
-    content: '✔'; color: #ead7d4; /* 勾勾顏色變磚紅，剛好跟背景反轉 */
+    content: '✔';  /* 勾勾顏色變磚紅，剛好跟背景反轉 */
     position: absolute;
     top: 50%;
     left: 50%;
