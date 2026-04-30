@@ -441,13 +441,14 @@
         const last = new Date(t.lastDate);
         const freqMs = (t.freq || 1) * 86400000;
         const elapsed = now.getTime() - last.getTime();
+        const remainingMs = freqMs - elapsed;
         const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
         const isDue = elapsed >= freqMs;
         const dueDate = new Date(last.getTime() + freqMs);
         const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
         const dd = String(dueDate.getDate()).padStart(2, '0');
-        return { ...t, idx, isDue, progress, daysPast: Math.floor(elapsed / 86400000), dateStr: `${mm}/${dd}` };
-      }).sort((a, b) => (a.isDue === b.isDue ? 0 : a.isDue ? -1 : 1));
+        return { ...t, idx, isDue, progress,remainingMs, daysPast: Math.floor(elapsed / 86400000), dateStr: `${mm}/${dd}` };
+      }).sort((a, b) => (a.remainingMs - b.remainingMs));
 
       document.getElementById('taskList').innerHTML = taskList.map(t => `
         <div class="task-card">
