@@ -110,42 +110,30 @@
       gap: 8px;
     }
 
-    /* --- CHECKBOX 樣式修正 --- */
+    /* --- CHECKBOX --- */
     input[type="checkbox"] {
       appearance: none;
       -webkit-appearance: none;
       width: 18px;
       height: 18px;
       cursor: pointer;
-      background: rgba(0,0,0,0.1); /* 沒打勾時的背景 */
+      background: rgba(0,0,0,0.1);
       position: relative;
       outline: none;
       transition: all 0.2s ease;
     }
     
     input[type="checkbox"]:checked {
-      background: #fff; /* 打勾後變全白 */
-      border-color: #fff;
+      background: #fff;
     }
 
     input[type="checkbox"]:checked::after {
       content: '✔';
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      color: var(--terracotta); /* 勾勾顏色變磚紅 */
+      color: var(--terracotta);
       font-size: 11px;
-    }
-
-    /* --- 按鈕動態效果 --- */
-    .btn-add-modern, .btn-secondary, .progress-btn {
-      transition: transform 0.1s, filter 0.1s;
-    }
-
-    .btn-add-modern:active, .btn-secondary:active, .progress-btn:active {
-      transform: scale(0.96) translateY(2px);
-      filter: brightness(0.9);
     }
 
     .btn-add-modern {
@@ -160,36 +148,7 @@
       cursor: pointer;
     }
 
-  /* --- 備份分頁按鈕自訂顏色 --- */
-    .btn-copy-custom {
-      background: var(--card);
-      color: var(--olive); /* 橄欖綠 */
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      height: 34px;
-      font-size: 10px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .btn-import-custom {
-      background: var(--card);
-      color: var(--terracotta); /* 磚紅 */
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      height: 34px;
-      font-size: 10px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    /* 點擊時的縮放效果 */
-    .btn-copy-custom:active, .btn-import-custom:active {
-      transform: scale(0.96) translateY(2px);
-      filter: brightness(0.9);
-    }
-
-    /* --- 任務卡片樣式 --- */
+    /* --- 任務卡片 --- */
     .task-card {
       background: #fdfaf5;
       border: 1px solid var(--border);
@@ -235,7 +194,7 @@
       z-index: 1;
     }
 
-    /* --- 床單分頁專用樣式 --- */
+    /* --- 床單分頁專用 --- */
     .split-recommend-container {
       display: flex;
       height: 140px;
@@ -243,11 +202,7 @@
       margin-bottom: 24px;
     }
 
-    .sheet-val { 
-      font-size: 18px; 
-      font-weight: 700; 
-      margin-top: 8px;
-    }  
+    .sheet-val { font-size: 18px; font-weight: 700; margin-top: 8px; }  
     
     .side-card {
       flex: 1;
@@ -265,16 +220,9 @@
       flex: 1.4; 
       background: var(--terracotta); 
       color: #e0c4be; 
-      border: none;
       opacity: 0.9;
     }
     
-    /* 庫存管理佈局 */
-    #bedding .input-group { flex-direction: row; align-items: center; gap: 8px; }
-    #bedding #sName { flex: 2; }
-    #bedding #sType { flex: 1; min-width: 80px; }
-    #bedding .btn-add-modern { white-space: nowrap; }
-
     /* --- 摺疊管理區 --- */
     .inventory-section { margin-top: 20px; border-top: 1px solid var(--border); }
     .inventory-header {
@@ -285,7 +233,7 @@
       padding: 15px 5px;
       color: var(--text-dim);
     }
-    .inventory-content { display: none; padding-bottom: 30px; }
+    .inventory-content { display: none; padding-bottom: 20px; }
     .inventory-content.active { display: block; animation: fadeIn 0.3s ease; }
 
     .minimal-row {
@@ -296,17 +244,8 @@
       border-bottom: 1px dashed var(--border);
     }
     .minimal-info { flex: 1; cursor: pointer; font-size: 13px; }
-    .minimal-tag { font-size: 9px; opacity: 0.5; margin-left: 6px; }
-    
     .btn-text { background: none; border: none; padding: 5px 10px; font-size: 10px; font-weight: 800; cursor: pointer; color: var(--olive); }
     .btn-text.delete { color: var(--terracotta); opacity: 0.6; }
-
-    #backupCode {
-      width: 100%; height: 120px; border: 1px solid var(--border);
-      padding: 10px; font-size: 10px; background: var(--card);
-      border-radius: 8px; margin-bottom: 10px; outline: none;
-      font-family: monospace; resize: none;
-    }
 
     #modalOverlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -373,12 +312,10 @@
           <div style="position:absolute; top:12px; right:12px; z-index:10;">
             <input type="checkbox" id="coolMode" onchange="toggleCooling(event)" onclick="event.stopPropagation()">
           </div>
-          
           <div>
             <div style="font-size:9px; font-weight:800; opacity:0.8; letter-spacing:0.1em;">NEXT ➔</div>
             <div id="nextSheetName" class="sheet-val">---</div>
           </div>
-
           <div onclick="rotateSheet()" style="font-size: 9px; font-weight: 900; cursor: pointer; padding-bottom: 4px; display: flex; align-items: center; letter-spacing: 0.05em;">
             ROTATE
           </div>
@@ -386,7 +323,7 @@
       </div>
 
       <div class="inventory-section">
-        <div class="inventory-header" onclick="toggleInventory()">
+        <div class="inventory-header" onclick="toggleSection('inventoryContent', 'inventoryArrow')">
           <span style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em;">INVENTORY</span>
           <span id="inventoryArrow" style="font-size: 8px; transition: 0.3s;">▼</span>
         </div>
@@ -403,7 +340,18 @@
               </div>
             </div>
           </div>
-          <div id="sheetInventory" style="margin-top: 10px;"></div>
+          <div id="sheetInventory"></div>
+        </div>
+      </div>
+
+      <div class="inventory-section">
+        <div class="inventory-header" onclick="toggleSection('logContent', 'logArrow')">
+          <span style="font-size: 10px; font-weight: 800; letter-spacing: 0.1em;">HISTORY LOG</span>
+          <span id="logArrow" style="font-size: 8px; transition: 0.3s;">▼</span>
+        </div>
+        <div id="logContent" class="inventory-content">
+          <div id="beddingLogs"></div>
+          <div id="moreLogBtn" onclick="expandLogs(event)" style="text-align: center; font-size: 9px; padding: 12px; color: var(--olive); font-weight: 800; cursor: pointer; display: none; letter-spacing: 0.1em;">VIEW ALL RECORDS</div>
         </div>
       </div>
     </div>
@@ -412,10 +360,10 @@
       <div class="admin-drawer">
         <div class="section-title">DATA EXCHANGE</div>
         <div class="input-group">
-          <textarea id="backupCode" placeholder="在此貼上備份碼後點擊 IMPORT..."></textarea>
+          <textarea id="backupCode" style="width: 100%; height: 120px; border: 1px solid var(--border); padding: 10px; font-size: 10px; border-radius: 8px; outline: none; resize: none;" placeholder="在此貼上備份碼..."></textarea>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button class="btn-copy-custom" onclick="copyBackup()">COPY</button>
-            <button class="btn-import-custom" onclick="importData()">IMPORT</button>
+            <button class="btn-text" style="background:var(--field); height:34px; border-radius:8px;" onclick="copyBackup()">COPY</button>
+            <button class="btn-text" style="background:var(--olive); color:#fff; height:34px; border-radius:8px;" onclick="importData()">IMPORT</button>
           </div>
         </div>
       </div>
@@ -424,8 +372,9 @@
 
   <script>
     const STORAGE_KEY = 'whenlastt';
+    let logsExpanded = false;
     let data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-      basic: [], sheets: [], sheetIdx: 0, currentSheet: "", sheetLastDate: new Date().toISOString(), coolMode: false
+      basic: [], sheets: [], sheetIdx: 0, currentSheet: "", sheetLastDate: new Date().toISOString(), coolMode: false, logs: []
     };
 
     function save() {
@@ -436,107 +385,116 @@
     function render() {
       const now = new Date();
 
-      // --- TASK 渲染 ---
+      // TASK 渲染
       const taskList = data.basic.map((t, idx) => {
         const last = new Date(t.lastDate);
         const freqMs = (t.freq || 1) * 86400000;
         const elapsed = now.getTime() - last.getTime();
-        const remainingMs = freqMs - elapsed;
         const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
-        const isDue = elapsed >= freqMs;
         const dueDate = new Date(last.getTime() + freqMs);
-        const mm = String(dueDate.getMonth() + 1).padStart(2, '0');
-        const dd = String(dueDate.getDate()).padStart(2, '0');
-        return { ...t, idx, isDue, progress,remainingMs, daysPast: Math.floor(elapsed / 86400000), dateStr: `${mm}/${dd}` };
-      }).sort((a, b) => (a.remainingMs - b.remainingMs));
+        return { ...t, idx, isDue: elapsed >= freqMs, progress, daysPast: Math.floor(elapsed / 86400000), dateStr: `${dueDate.getMonth()+1}/${dueDate.getDate()}` };
+      }).sort((a, b) => (new Date(a.lastDate).getTime() + a.freq*86400000) - (new Date(b.lastDate).getTime() + b.freq*86400000));
 
       document.getElementById('taskList').innerHTML = taskList.map(t => `
         <div class="task-card">
           <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
-            <div class="item-title" style="${t.isDue ? 'color:var(--terracotta); font-weight:bold' : ''}">${t.name}</div>
-            <div class="item-meta" style="${t.isDue ? 'color:var(--terracotta); font-weight:800;' : ''}">
-              已過 ${t.daysPast} 天 ▪︎ 預計 <span style="${t.isDue ? '' : 'color: var(--terracotta); font-weight: bold;'}">${t.dateStr}</span> 更換
-            </div>
+            <div class="item-title" style="${t.isDue ? 'color:var(--terracotta)' : ''}">${t.name}</div>
+            <div class="item-meta">已過 ${t.daysPast} 天 ▪︎ 預計 <span style="${t.isDue ? 'color:var(--terracotta);font-weight:800' : ''}">${t.dateStr}</span> 更換</div>
           </div>
           <div class="progress-btn" onclick="doneBasic(${t.idx})">
-            <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress / 100) * 0.6}"></div>
+            <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress/100)*0.6}"></div>
             <div class="progress-text" style="color:${t.progress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
           </div>
         </div>`).join('');
 
-      // --- BEDDING 渲染 ---
+      // BEDDING 渲染
       document.getElementById('currentSheetName').innerText = data.currentSheet || "尚未設置";
       document.getElementById('sheetDaysInfo').innerText = `${Math.floor((now - new Date(data.sheetLastDate)) / 86400000)} DAYS`;
 
       let summerSheets = data.sheets.filter(s => s.type === 'summer');
       let otherSheets = data.sheets.filter(s => s.type === 'all');
-      let weightedPool = [];
-
-      if (data.coolMode) {
-        if (summerSheets.length > 0) {
-          for (let i = 0; i < 5; i++) {
-            weightedPool.push(...summerSheets);
-            if (otherSheets.length > 0) weightedPool.push(otherSheets[i % otherSheets.length]);
-          }
-        } else { weightedPool = otherSheets; }
-      } else {
-        weightedPool = otherSheets.length > 0 ? otherSheets : data.sheets;
-      }
-
+      let weightedPool = data.coolMode && summerSheets.length > 0 ? [...summerSheets, ...summerSheets, ...summerSheets, ...otherSheets] : (otherSheets.length > 0 ? otherSheets : data.sheets);
+      
       let rec = weightedPool.length > 0 ? weightedPool[data.sheetIdx % weightedPool.length] : { name: "無款式" };
       document.getElementById('nextSheetName').innerText = rec.name;
       document.getElementById('coolMode').checked = data.coolMode;
 
       document.getElementById('sheetInventory').innerHTML = data.sheets.map((s, idx) => `
         <div class="minimal-row">
-          <div class="minimal-info" onclick="openModal('sheet', ${idx})">
-            ${s.name} <span class="minimal-tag">${s.type === 'summer' ? '☀️' : '🎈'}</span>
-          </div>
-          <div class="minimal-actions">
+          <div class="minimal-info" onclick="openModal('sheet', ${idx})">${s.name} <span style="font-size:9px;opacity:0.4">${s.type==='summer'?'☀️':'🎈'}</span></div>
+          <div>
             <button class="btn-text" onclick="setActiveSheet(${idx})">SET</button>
             <button class="btn-text delete" onclick="deleteItem('sheet', ${idx})">DEL</button>
           </div>
         </div>`).join('');
+
+      // LOG 渲染 (只顯示前 5 筆，展開後顯示 20 筆)
+      const allLogs = data.logs || [];
+      const displayLogs = logsExpanded ? allLogs : allLogs.slice(0, 5);
+      document.getElementById('beddingLogs').innerHTML = displayLogs.map(log => {
+        const d = new Date(log.date);
+        return `<div style="display:flex;justify-content:space-between;padding:10px 5px;border-bottom:1px solid var(--field);font-size:12px;">
+          <div>${log.name}</div><div style="color:var(--text-dim);font-family:monospace;">${d.getMonth()+1}/${d.getDate()}</div>
+        </div>`;
+      }).join('') || '<div style="font-size:10px;color:#ccc;text-align:center;padding:20px;">尚未有紀錄</div>';
+      
+      document.getElementById('moreLogBtn').style.display = (allLogs.length > 5 && !logsExpanded) ? 'block' : 'none';
     }
 
-    // --- 功能函式 ---
+    // 功能邏輯
     function addBasic() {
       const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
       if (n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); save(); document.getElementById('bName').value = ''; document.getElementById('bVal').value = ''; }
     }
-
-    function doneBasic(idx) { if (window.navigator.vibrate) window.navigator.vibrate(10); data.basic[idx].lastDate = new Date().toISOString(); save(); }
+    function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
     function addSheet() { const n = document.getElementById('sName').value, t = document.getElementById('sType').value; if (n) { data.sheets.push({ name: n, type: t }); save(); document.getElementById('sName').value = ''; } }
-    function setActiveSheet(idx) { data.currentSheet = data.sheets[idx].name; data.sheetLastDate = new Date().toISOString(); save(); }
     
     function rotateSheet() {
       const next = document.getElementById('nextSheetName').innerText;
-      if (next !== "無款式") { if (window.navigator.vibrate) window.navigator.vibrate(20); data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save(); }
+      if (next !== "無款式") {
+        if (!data.logs) data.logs = [];
+        data.logs.unshift({ name: next, date: new Date().toISOString() });
+        if (data.logs.length > 20) data.logs.pop();
+        data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save();
+      }
     }
 
+    function setActiveSheet(idx) {
+      const s = data.sheets[idx];
+      if (!data.logs) data.logs = [];
+      data.logs.unshift({ name: s.name, date: new Date().toISOString() });
+      if (data.logs.length > 20) data.logs.pop();
+      data.currentSheet = s.name; data.sheetLastDate = new Date().toISOString(); save();
+    }
+
+    function toggleSection(id, arrowId) {
+      const isActive = document.getElementById(id).classList.toggle('active');
+      document.getElementById(arrowId).style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    function expandLogs(e) { e.stopPropagation(); logsExpanded = true; render(); }
     function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
-    function toggleInventory() { const isActive = document.getElementById('inventoryContent').classList.toggle('active'); document.getElementById('inventoryArrow').style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)'; }
     function tab(id, e) { document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
 
     function openModal(type, idx) {
       const item = type === 'task' ? data.basic[idx] : data.sheets[idx];
       const isTask = type === 'task';
-      let content = `
+      document.getElementById('modalContent').innerHTML = `
         <div class="section-title">EDIT ${isTask ? 'TASK' : 'PATTERN'}</div>
-        <div style="margin-bottom: 15px;"><label style="font-size: 9px; color: var(--olive); font-weight: 800;">NAME</label><input type="text" id="editN" class="input-style" value="${item.name}"></div>
-        <div style="margin-bottom: 20px;"><label style="font-size: 9px; color: var(--olive); font-weight: 800;">${isTask ? 'FREQ (DAYS)' : 'SEASON'}</label>
-          ${isTask ? `<input type="number" id="editF" class="input-style" value="${item.freq}">` : `<select id="editT" class="input-style"><option value="all" ${item.type === 'all' ? 'selected' : ''}>四季</option><option value="summer" ${item.type === 'summer' ? 'selected' : ''}>夏季</option></select>`}
+        <div style="margin-bottom:15px;"><label style="font-size:9px;color:var(--olive);font-weight:800">NAME</label><input type="text" id="editN" class="input-style" value="${item.name}"></div>
+        <div style="margin-bottom:20px;"><label style="font-size:9px;color:var(--olive);font-weight:800">${isTask?'FREQ (DAYS)':'SEASON'}</label>
+          ${isTask?`<input type="number" id="editF" class="input-style" value="${item.freq}">`:`<select id="editT" class="input-style"><option value="all" ${item.type==='all'?'selected':''}>四季</option><option value="summer" ${item.type==='summer'?'selected':''}>夏季</option></select>`}
         </div>
-        <div style="display: flex; flex-direction: column; gap: 10px;"><button class="btn-add-modern" style="width: 100%; height: 40px;" onclick="updateItem('${type}', ${idx})">SAVE CHANGES</button><button class="btn-secondary" style="width: 100%; height: 34px; color: var(--terracotta);" onclick="deleteItem('${type}', ${idx})">DELETE</button></div>`;
-      document.getElementById('modalContent').innerHTML = content;
+        <button class="btn-add-modern" style="width:100%;height:40px;margin-bottom:10px" onclick="updateItem('${type}', ${idx})">SAVE</button>
+        <button class="btn-text" style="width:100%;color:var(--terracotta)" onclick="deleteItem('${type}', ${idx})">DELETE</button>`;
       document.getElementById('modalOverlay').style.display = 'flex';
     }
 
     function updateItem(type, idx) { if (type === 'task') { data.basic[idx].name = document.getElementById('editN').value; data.basic[idx].freq = parseFloat(document.getElementById('editF').value); } else { data.sheets[idx].name = document.getElementById('editN').value; data.sheets[idx].type = document.getElementById('editT').value; } closeModal(); save(); }
-    function deleteItem(type, idx) { if (confirm("確定刪除？")) { data[type === 'task' ? 'basic' : 'sheets'].splice(idx, 1); closeModal(); save(); } }
+    function deleteItem(type, idx) { if (confirm("確定刪除？")) { data[type==='task'?'basic':'sheets'].splice(idx, 1); closeModal(); save(); } }
     function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
-    function copyBackup() { const code = btoa(unescape(encodeURIComponent(JSON.stringify(data)))); const box = document.getElementById('backupCode'); box.value = code; box.select(); document.execCommand('copy'); alert("備份碼已複製！"); }
-    function importData() { const box = document.getElementById('backupCode'); const code = box.value.trim(); try { data = JSON.parse(decodeURIComponent(escape(atob(code)))); save(); box.value = ""; alert("資料還原成功！"); } catch (e) { alert("代碼無效"); } }
+    function copyBackup() { const code = btoa(unescape(encodeURIComponent(JSON.stringify(data)))); document.getElementById('backupCode').value = code; alert("已產生備份碼！"); }
+    function importData() { try { data = JSON.parse(decodeURIComponent(escape(atob(document.getElementById('backupCode').value.trim())))); save(); alert("匯入成功！"); } catch(e) { alert("無效代碼"); } }
 
     render();
   </script>
