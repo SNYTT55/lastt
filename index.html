@@ -163,6 +163,7 @@
 
     .item-title { font-size: 14px; margin-bottom: 4px; color:#4d5945; font-weight:bold }
     .item-meta { font-size: 10px; color:var(--text-dim); }
+    .item-note { font-size: 11px; color: var(--olive); margin-top: 4px; font-style: italic; opacity: 0.9; }
 
     .progress-btn {
       width: 90px;
@@ -351,7 +352,7 @@
         </div>
         <div id="logContent" class="inventory-content">
           <div id="beddingLogs"></div>
-          <div id="moreLogBtn" onclick="expandLogs(event)" style="text-align: center; font-size: 9px; padding: 12px; color: var(--olive); font-weight: 800; cursor: pointer; display: none; letter-spacing: 0.1em;">VIEW ALL RECORDS</div>
+          <div id="moreLogBtn" onclick="toggleLogsDisplay(event)" style="text-align: center; font-size: 9px; padding: 12px; color: var(--olive); font-weight: 800; cursor: pointer; display: none; letter-spacing: 0.1em;">VIEW ALL RECORDS</div>
         </div>
       </div>
     </div>
@@ -392,20 +393,23 @@
         const elapsed = now.getTime() - last.getTime();
         const progress = Math.min(Math.max((elapsed / freqMs) * 100, 0), 100);
         const dueDate = new Date(last.getTime() + freqMs);
-        return { ...t, idx, isDue: elapsed >= freqMs, progress, daysPast: Math.floor(elapsed / 86400000), dateStr: `${dueDate.getMonth()+1}/${dueDate.getDate()}` };
+        return { ...t, originalIdx: idx, isDue: elapsed >= freqMs, progress, daysPast: Math.floor(elapsed / 86400000), dateStr: `${dueDate.getMonth()+1}/${dueDate.getDate()}` };
       }).sort((a, b) => (new Date(a.lastDate).getTime() + a.freq*86400000) - (new Date(b.lastDate).getTime() + b.freq*86400000));
 
-      document.getElementById('taskList').innerHTML = taskList.map(t => `
+      document.getElementById('taskList').innerHTML = taskList.map(t => {
+        const visualProgress = Math.min(t.progress, 100);
+        return `
         <div class="task-card">
-          <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.idx})">
+          <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.originalIdx})">
             <div class="item-title" style="${t.isDue ? 'color:var(--terracotta)' : ''}">${t.name}</div>
             <div class="item-meta">已過 ${t.daysPast} 天 ▪︎ 預計 <span style="${t.isDue ? 'color:var(--terracotta);font-weight:800' : ''}">${t.dateStr}</span> 更換</div>
+            ${t.note ? `<div class="item-note">✍️ ${t.note}</div>` : ''}
           </div>
-          <div class="progress-btn" onclick="doneBasic(${t.idx})">
-            <div class="progress-fill" style="width:${t.progress}%; opacity:${0.2 + (t.progress/100)*0.6}"></div>
-            <div class="progress-text" style="color:${t.progress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
+          <div class="progress-btn" onclick="doneBasic(${t.originalIdx})">
+            <div class="progress-fill" style="width:${visualProgress}%; opacity:${0.2 + (visualProgress/100)*0.6}"></div>
+            <div class="progress-text" style="color:${visualProgress > 60 ? '#fff' : 'var(--text-main)'}">RENEW</div>
           </div>
-        </div>`).join('');
+        </div>`}).join('');
 
       // BEDDING 渲染
       document.getElementById('currentSheetName').innerText = data.currentSheet || "尚未設置";
@@ -428,23 +432,34 @@
           </div>
         </div>`).join('');
 
-      // LOG 渲染 (只顯示前 5 筆，展開後顯示 20 筆)
+      // LOG 渲染 (新增單筆歷史紀錄刪除按鈕)
       const allLogs = data.logs || [];
       const displayLogs = logsExpanded ? allLogs : allLogs.slice(0, 5);
-      document.getElementById('beddingLogs').innerHTML = displayLogs.map(log => {
+      document.getElementById('beddingLogs').innerHTML = displayLogs.map((log, index) => {
         const d = new Date(log.date);
-        return `<div style="display:flex;justify-content:space-between;padding:10px 5px;border-bottom:1px solid var(--field);font-size:12px;">
-          <div>${log.name}</div><div style="color:var(--text-dim);font-family:monospace;">${d.getMonth()+1}/${d.getDate()}</div>
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 5px;border-bottom:1px solid var(--field);font-size:12px;">
+          <div style="flex:1;">${log.name}</div>
+          <div style="color:var(--text-dim);font-family:monospace;margin-right:15px;">${d.getMonth()+1}/${d.getDate()}</div>
+          <div style="color:var(--terracotta);cursor:pointer;font-weight:bold;padding:0 5px;opacity:0.7;" onclick="deleteLog(${index})">✕</div>
         </div>`;
       }).join('') || '<div style="font-size:10px;color:#ccc;text-align:center;padding:20px;">尚未有紀錄</div>';
       
-      document.getElementById('moreLogBtn').style.display = (allLogs.length > 5 && !logsExpanded) ? 'block' : 'none';
+      const moreLogBtn = document.getElementById('moreLogBtn');
+      if (allLogs.length > 5) {
+        moreLogBtn.style.display = 'block';
+        moreLogBtn.innerText = logsExpanded ? 'COLLAPSE RECORDS' : 'VIEW ALL RECORDS';
+      } else {
+        moreLogBtn.style.display = 'none';
+      }
+
+      // 自動同步最新的加密碼到 DATA 文字框中
+      document.getElementById('backupCode').value = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
     }
 
     // 功能邏輯
     function addBasic() {
       const n = document.getElementById('bName').value, v = parseFloat(document.getElementById('bVal').value), u = parseFloat(document.getElementById('bUnit').value);
-      if (n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString() }); save(); document.getElementById('bName').value = ''; document.getElementById('bVal').value = ''; }
+      if (n && v) { data.basic.push({ name: n, freq: v * u, lastDate: new Date().toISOString(), note: "" }); save(); document.getElementById('bName').value = ''; document.getElementById('bVal').value = ''; }
     }
     function doneBasic(idx) { data.basic[idx].lastDate = new Date().toISOString(); save(); }
     function addSheet() { const n = document.getElementById('sName').value, t = document.getElementById('sType').value; if (n) { data.sheets.push({ name: n, type: t }); save(); document.getElementById('sName').value = ''; } }
@@ -454,7 +469,7 @@
       if (next !== "無款式") {
         if (!data.logs) data.logs = [];
         data.logs.unshift({ name: next, date: new Date().toISOString() });
-        if (data.logs.length > 20) data.logs.pop();
+        if (data.logs.length > 50) data.logs.pop(); // 放大上限至50筆方便管理
         data.currentSheet = next; data.sheetIdx++; data.sheetLastDate = new Date().toISOString(); save();
       }
     }
@@ -463,8 +478,22 @@
       const s = data.sheets[idx];
       if (!data.logs) data.logs = [];
       data.logs.unshift({ name: s.name, date: new Date().toISOString() });
-      if (data.logs.length > 20) data.logs.pop();
+      if (data.logs.length > 50) data.logs.pop();
       data.currentSheet = s.name; data.sheetLastDate = new Date().toISOString(); save();
+    }
+
+    // 刪除單筆歷史紀錄
+    function deleteLog(idx) {
+      if (confirm("確定刪除這筆歷史紀錄？")) {
+        data.logs.splice(idx, 1);
+        // 如果刪除的是最新的一筆，且紀錄中還有資料，就把目前床單同步為上一筆的名稱
+        if (idx === 0) {
+          data.currentSheet = data.logs.length > 0 ? data.logs[0].name : "尚未設置";
+          data.sheetLastDate = data.logs.length > 0 ? data.logs[0].date : new Date().toISOString();
+          if(data.sheetIdx > 0) data.sheetIdx--;
+        }
+        save();
+      }
     }
 
     function toggleSection(id, arrowId) {
@@ -472,7 +501,7 @@
       document.getElementById(arrowId).style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
-    function expandLogs(e) { e.stopPropagation(); logsExpanded = true; render(); }
+    function toggleLogsDisplay(e) { e.stopPropagation(); logsExpanded = !logsExpanded; render(); }
     function toggleCooling(e) { data.coolMode = e.target.checked; save(); }
     function tab(id, e) { document.querySelectorAll('.tab-content, .nav-btn').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
 
@@ -482,18 +511,31 @@
       document.getElementById('modalContent').innerHTML = `
         <div class="section-title">EDIT ${isTask ? 'TASK' : 'PATTERN'}</div>
         <div style="margin-bottom:15px;"><label style="font-size:9px;color:var(--olive);font-weight:800">NAME</label><input type="text" id="editN" class="input-style" value="${item.name}"></div>
-        <div style="margin-bottom:20px;"><label style="font-size:9px;color:var(--olive);font-weight:800">${isTask?'FREQ (DAYS)':'SEASON'}</label>
+        <div style="margin-bottom:15px;"><label style="font-size:9px;color:var(--olive);font-weight:800">${isTask?'FREQ (DAYS)':'SEASON'}</label>
           ${isTask?`<input type="number" id="editF" class="input-style" value="${item.freq}">`:`<select id="editT" class="input-style"><option value="all" ${item.type==='all'?'selected':''}>四季</option><option value="summer" ${item.type==='summer'?'selected':''}>夏季</option></select>`}
         </div>
+        ${isTask ? `<div style="margin-bottom:20px;"><label style="font-size:9px;color:var(--olive);font-weight:800">NOTE (備註)</label><input type="text" id="editNote" class="input-style" value="${item.note || ''}" placeholder="例如：更換型號、耗材備註..."></div>` : ''}
         <button class="btn-add-modern" style="width:100%;height:40px;margin-bottom:10px" onclick="updateItem('${type}', ${idx})">SAVE</button>
         <button class="btn-text" style="width:100%;color:var(--terracotta)" onclick="deleteItem('${type}', ${idx})">DELETE</button>`;
       document.getElementById('modalOverlay').style.display = 'flex';
     }
 
-    function updateItem(type, idx) { if (type === 'task') { data.basic[idx].name = document.getElementById('editN').value; data.basic[idx].freq = parseFloat(document.getElementById('editF').value); } else { data.sheets[idx].name = document.getElementById('editN').value; data.sheets[idx].type = document.getElementById('editT').value; } closeModal(); save(); }
+    function updateItem(type, idx) { 
+      if (type === 'task') { 
+        data.basic[idx].name = document.getElementById('editN').value; 
+        data.basic[idx].freq = parseFloat(document.getElementById('editF').value); 
+        data.basic[idx].note = document.getElementById('editNote').value;
+      } else { 
+        data.sheets[idx].name = document.getElementById('editN').value; 
+        data.sheets[idx].type = document.getElementById('editT').value; 
+      } 
+      closeModal(); 
+      save(); 
+    }
+    
     function deleteItem(type, idx) { if (confirm("確定刪除？")) { data[type==='task'?'basic':'sheets'].splice(idx, 1); closeModal(); save(); } }
     function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
-    function copyBackup() { const code = btoa(unescape(encodeURIComponent(JSON.stringify(data)))); document.getElementById('backupCode').value = code; alert("已產生備份碼！"); }
+    function copyBackup() { const code = btoa(unescape(encodeURIComponent(JSON.stringify(data)))); document.getElementById('backupCode').value = code; navigator.clipboard.writeText(code); alert("已產生並複製備份碼到剪貼簿！"); }
     function importData() { try { data = JSON.parse(decodeURIComponent(escape(atob(document.getElementById('backupCode').value.trim())))); save(); alert("匯入成功！"); } catch(e) { alert("無效代碼"); } }
 
     render();
