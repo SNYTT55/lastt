@@ -163,7 +163,7 @@
 
     .item-title { font-size: 14px; margin-bottom: 4px; color:#4d5945; font-weight:bold }
     .item-meta { font-size: 10px; color:var(--text-dim); }
-    .item-note { font-size: 11px; color: var(--olive); margin-top: 4px; font-style: italic; opacity: 0.9; }
+    .item-note { font-size: 11px; color: var(--terracotta); margin-top: 4px; font-style: italic; opacity: 0.9; }
 
     .progress-btn {
       width: 90px;
@@ -403,7 +403,7 @@
           <div style="flex:1; cursor:pointer;" onclick="openModal('task', ${t.originalIdx})">
             <div class="item-title" style="${t.isDue ? 'color:var(--terracotta)' : ''}">${t.name}</div>
             <div class="item-meta">已過 ${t.daysPast} 天 ▪︎ 預計 <span style="${t.isDue ? 'color:var(--terracotta);font-weight:800' : ''}">${t.dateStr}</span> 更換</div>
-            ${t.note ? `<div class="item-note">✍️ ${t.note}</div>` : ''}
+            ${t.note ? `<div class="item-note">▪︎${t.note}</div>` : ''}
           </div>
           <div class="progress-btn" onclick="doneBasic(${t.originalIdx})">
             <div class="progress-fill" style="width:${visualProgress}%; opacity:${0.2 + (visualProgress/100)*0.6}"></div>
